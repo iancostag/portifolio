@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { X, Printer } from "lucide-react";
 import { getPortfolioData } from "@/data/portfolio-i18n";
 import { useLocale } from "@/context/LocaleContext";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface FastScanModalProps {
   isOpen: boolean;
@@ -12,6 +14,22 @@ interface FastScanModalProps {
 export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
   const { locale } = useLocale();
   const { personalInfo, projects, experiences, skillCategories } = getPortfolioData(locale);
+  const modalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(modalRef, isOpen);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -20,10 +38,11 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
         badge: "1-Page Executive Summary",
         print: "Print / Save PDF",
         close: "Close summary",
+        esc: "ESC",
         subtitle: "Data Engineering & AI (Instituto Eldorado / Softex) • Software Engineering (UnB)",
         summaryTitle: "Executive Summary",
         summaryBody:
-          "Data & AI Engineer focused on Medallion & Star Schema Data Engineering, LLM/RAG Orchestration, and GPU-Accelerated Computing (CUDA / Vulkan). Proven production impact: 78% LLM token reduction on hybrid RAG pipelines (Senhora Vera / Eldorado), 60m → 5m clinical report automation in production (MeuCapilar), and ~20x CUDA speedup.",
+          "Data & AI Engineer focused on Medallion & Star Schema Data Engineering, LLM/RAG Orchestration, and GPU-Accelerated Computing (CUDA / Vulkan). Proven production impact: 75% LLM token reduction on hybrid RAG pipelines (Senhora Vera / Eldorado), 60m → 5m clinical report automation in production (MeuCapilar), and parallel MPM simulation in CUDA / C++.",
         projectsTitle: "Featured Projects & Measurable Outcomes",
         expTitle: "Experience & Research",
         skillsTitle: "Technical Competencies",
@@ -32,10 +51,11 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
         badge: "Visão Rápida para Recrutador & Tech Lead",
         print: "Imprimir / Salvar PDF",
         close: "Fechar resumo",
+        esc: "ESC",
         subtitle: "Engenharia de Dados & IA (Instituto Eldorado / Softex) • Engenharia de Software (UnB)",
         summaryTitle: "Resumo Executivo",
         summaryBody:
-          "Engenheiro de Dados & IA com foco em Engenharia de Dados (Medalhão & Star Schema), Orquestração de LLMs/RAG e Computação Acelerada em GPU (CUDA / Vulkan). Impacto comprovado: redução de 78% no custo de tokens com RAG híbrido (Senhora Vera / Eldorado), redução de laudos clínicos de 60 para 5 minutos em produção (MeuCapilar) e speedup de ~20x em CUDA.",
+          "Engenheiro de Dados & IA com foco em Engenharia de Dados (Medalhão & Star Schema), Orquestração de LLMs/RAG e Computação Acelerada em GPU (CUDA / Vulkan). Impacto comprovado: redução de 75% no custo de tokens com RAG híbrido (Senhora Vera / Eldorado), redução de laudos clínicos de 60 para 5 minutos em produção (MeuCapilar) e simulação paralela MPM em CUDA / C++.",
         projectsTitle: "Projetos em Destaque & Impactos Mensuráveis",
         expTitle: "Trajetória Profissional & Pesquisa",
         skillsTitle: "Competências Técnicas",
@@ -48,7 +68,11 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[var(--foreground)]">
+      <div
+        ref={modalRef}
+        data-print-resume
+        className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[var(--foreground)]"
+      >
         <div className="sticky top-0 z-20 px-6 py-4 bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
@@ -70,8 +94,9 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
               type="button"
               onClick={onClose}
               aria-label={t.close}
-              className="p-1.5 rounded-lg text-[var(--muted-subtle)] hover:text-[var(--foreground)] hover:bg-[var(--surface-subtle)] transition-colors cursor-pointer"
+              className="px-2 py-1 rounded-lg text-xs font-mono text-[var(--muted-subtle)] hover:text-[var(--foreground)] hover:bg-[var(--surface-subtle)] transition-colors cursor-pointer flex items-center gap-1"
             >
+              <span>[{t.esc}]</span>
               <X className="w-4 h-4" />
             </button>
           </div>

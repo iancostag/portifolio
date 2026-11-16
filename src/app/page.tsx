@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Project } from "@/data/portfolio-data";
 import { getPortfolioData } from "@/data/portfolio-i18n";
 import { useLocale } from "@/context/LocaleContext";
@@ -21,6 +20,7 @@ import {
   ChevronUp,
   Sun,
   Moon,
+  Download,
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon, MailIcon } from "@/components/SocialIcons";
 import {
@@ -50,6 +50,26 @@ export default function Home() {
   const [activeTrack, setActiveTrack] = useState<TrackFilter>("all");
   const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
   const [copiedEmail, setCopiedEmail] = useState<boolean>(false);
+
+  // Open project drawer from ?project=<id> query param
+  useEffect(() => {
+    const projectId = new URLSearchParams(window.location.search).get("project");
+    if (projectId) {
+      const match = projects.find((p) => p.id === projectId);
+      if (match) setSelectedProject(match);
+    }
+  }, [locale]);
+
+  const selectProject = (project: Project | null) => {
+    setSelectedProject(project);
+    const url = new URL(window.location.href);
+    if (project) {
+      url.searchParams.set("project", project.id);
+    } else {
+      url.searchParams.delete("project");
+    }
+    window.history.replaceState({}, "", url.toString());
+  };
 
   // Real-time Brasília clock
   useEffect(() => {
@@ -112,12 +132,13 @@ export default function Home() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
     }
   };
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email);
+    navigator.clipboard.writeText(personalInfo.email).catch(() => {});
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
@@ -144,12 +165,14 @@ export default function Home() {
             "Building production data pipelines (Medallion & Star Schema), LLM/RAG orchestration, and GPU-accelerated systems (CUDA/C++).",
           kpis: [
             { value: "Millions", label: "DW Rows (ETL)" },
-            { value: "-78%", label: "RAG Token Cost" },
+            { value: "-75%", label: "RAG Token Cost" },
             { value: "1h → 5m", label: "SQL & Prod. Reports" },
-            { value: "~20x", label: "CUDA Speedup" },
+            { value: "+3 Yrs", label: "Data & AI Eng." },
           ],
           searchBtn: "Search",
           cvBtn: "1-Page CV",
+          pdfBtn: "PDF",
+          pdfTitle: "Print or Save 1-Page CV as PDF",
           modeTitle: colorMode === "light" ? "Switch to dark mode" : "Switch to light mode",
           nav: [
             { id: "about", label: "About & Focus" },
@@ -170,14 +193,14 @@ export default function Home() {
           aboutP2: (
             <>
               My work sits at the intersection of <strong className="text-[var(--foreground)] font-semibold">rigorous data & software engineering</strong> and{" "}
-              <strong className="text-[var(--foreground)] font-semibold">production AI</strong>: Medallion ETL pipelines, hierarchical RAG on PostgreSQL/PGVector, and hardware-accelerated computing in{" "}
-              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong> achieving ~20x speedups over multi-core CPU.
+              <strong className="text-[var(--foreground)] font-semibold">production AI</strong>: Medallion ETL pipelines, hierarchical RAG on PostgreSQL/PGVector, and GPU-accelerated computing in{" "}
+              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong>.
             </>
           ),
           aboutP3: (
             <>
               I build beyond notebook prototypes—focusing on factual guardrails against LLM hallucinations, cutting inference token costs by{" "}
-              <span className="text-[var(--signal-fg)] font-mono font-semibold">-78% in Senhora Vera (Eldorado)</span>, and optimizing production clinical reports from{" "}
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">-75% in Senhora Vera (Eldorado)</span>, and optimizing production clinical reports from{" "}
               <span className="text-[var(--signal-fg)] font-mono font-semibold">60m to 5m in MeuCapilar</span>.
             </>
           ),
@@ -212,12 +235,14 @@ export default function Home() {
             "Construindo pipelines de dados em produção (Medalhão & Star Schema), orquestrações de LLMs/RAG e sistemas acelerados em GPU (CUDA/C++).",
           kpis: [
             { value: "Milhões", label: "Linhas em DW (ETL)" },
-            { value: "-78%", label: "Tokens (RAG)" },
+            { value: "-75%", label: "Tokens (RAG)" },
             { value: "1h → 5m", label: "SQL & Laudos Prod." },
-            { value: "~20x", label: "Speedup CUDA" },
+            { value: "+3 Anos", label: "Eng. Dados & IA" },
           ],
           searchBtn: "Buscar",
           cvBtn: "1-Pág CV",
+          pdfBtn: "PDF",
+          pdfTitle: "Imprimir ou salvar currículo em PDF",
           modeTitle: colorMode === "light" ? "Mudar para modo escuro" : "Mudar para modo claro",
           nav: [
             { id: "about", label: "Visão & Atuação" },
@@ -238,14 +263,14 @@ export default function Home() {
           aboutP2: (
             <>
               Meu foco é a intersecção entre <strong className="text-[var(--foreground)] font-semibold">engenharia de dados rigorosa</strong> e{" "}
-              <strong className="text-[var(--foreground)] font-semibold">IA em produção</strong>: arquiteturas ETL Medalhão, pipelines RAG hierárquicos no PostgreSQL/PGVector e computação acelerada em{" "}
-              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong> com ganhos de até ~20x sobre CPU.
+              <strong className="text-[var(--foreground)] font-semibold">IA em produção</strong>: arquiteturas ETL Medalhão, pipelines RAG hierárquicos no PostgreSQL/PGVector e computação acelerada em GPU com{" "}
+              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong>.
             </>
           ),
           aboutP3: (
             <>
               Vou além de protótipos em notebooks — foco em <em>guardrails</em> factuais contra alucinações, redução de{" "}
-              <span className="text-[var(--signal-fg)] font-mono font-semibold">-78% no custo de tokens na Senhora Vera (Eldorado)</span> e otimização de laudos clínicos em produção de{" "}
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">-75% no custo de tokens na Senhora Vera (Eldorado)</span> e otimização de laudos clínicos em produção de{" "}
               <span className="text-[var(--signal-fg)] font-mono font-semibold">60m para 5m no MeuCapilar</span>.
             </>
           ),
@@ -288,21 +313,21 @@ export default function Home() {
         isOpen={isCommandOpen}
         onOpen={() => setIsCommandOpen(true)}
         onClose={() => setIsCommandOpen(false)}
-        onSelectProject={(p) => setSelectedProject(p)}
+        onSelectProject={(p) => selectProject(p)}
       />
 
       <ProjectDrawer
         project={selectedProject}
-        onClose={() => setSelectedProject(null)}
+        onClose={() => selectProject(null)}
       />
 
       <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-10 md:px-12 md:py-16 lg:px-20 lg:py-0">
         <div className="lg:flex lg:justify-between lg:gap-12">
           {/* LEFT COLUMN (STICKY ON DESKTOP) */}
-          <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[46%] lg:flex-col lg:justify-between lg:py-16 lg:overflow-y-auto">
+          <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[46%] lg:flex-col lg:justify-between lg:py-10 lg:overflow-y-auto">
             <div>
               {/* Top Utility Bar: Status + Language Switcher + Light/Dark Toggle */}
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
                   <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[var(--border)] shrink-0">
                     <Image
@@ -336,7 +361,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setLocale("en")}
-                      className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
+                      className={`px-2.5 sm:px-2 py-2 sm:py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
                         locale === "en"
                           ? "bg-[var(--cta-bg)] text-[var(--cta-fg)]"
                           : "text-[var(--muted-subtle)] hover:text-[var(--foreground)]"
@@ -347,7 +372,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setLocale("pt")}
-                      className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
+                      className={`px-2.5 sm:px-2 py-2 sm:py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
                         locale === "pt"
                           ? "bg-[var(--cta-bg)] text-[var(--cta-fg)]"
                           : "text-[var(--muted-subtle)] hover:text-[var(--foreground)]"
@@ -384,13 +409,13 @@ export default function Home() {
               </p>
 
               {/* Impact KPI Grid — Signal color reserved exclusively for verified metrics */}
-              <div className="mt-6 grid grid-cols-2 gap-2.5 max-w-md">
+              <div className="mt-5 grid grid-cols-2 gap-2 max-w-md">
                 {ui.kpis.map((kpi) => (
                   <div
                     key={kpi.label}
-                    className="p-3 rounded-xl bg-[var(--card)] border border-[var(--border)]"
+                    className="p-2.5 rounded-xl bg-[var(--card)] border border-[var(--border)]"
                   >
-                    <div className="text-xl sm:text-2xl font-bold text-[var(--signal-fg)] font-mono tracking-tight">
+                    <div className="text-lg sm:text-xl font-bold text-[var(--signal-fg)] font-mono tracking-tight">
                       {kpi.value}
                     </div>
                     <div className="text-xs font-mono text-[var(--muted-subtle)] mt-0.5">
@@ -401,7 +426,7 @@ export default function Home() {
               </div>
 
               {/* Action Controls */}
-              <div className="mt-5 flex items-center gap-2.5 flex-wrap">
+              <div className="mt-4 flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setIsFastScanOpen(true)}
@@ -409,6 +434,18 @@ export default function Home() {
                 >
                   <FileText className="w-3.5 h-3.5" />
                   <span>{ui.cvBtn}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsFastScanOpen(true);
+                    setTimeout(() => window.print(), 150);
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[var(--card)] hover:bg-[var(--surface-subtle)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-colors cursor-pointer"
+                  title={ui.pdfTitle}
+                >
+                  <Download className="w-3.5 h-3.5 text-[var(--accent)]" />
+                  <span>{ui.pdfBtn}</span>
                 </button>
                 <button
                   type="button"
@@ -424,8 +461,8 @@ export default function Home() {
               </div>
 
               {/* Desktop Navigation */}
-              <nav className="nav hidden lg:block mt-8" aria-label="Section navigation">
-                <ul className="w-max space-y-3">
+              <nav className="nav hidden lg:block mt-6" aria-label="Section navigation">
+                <ul className="w-max space-y-2.5">
                   {ui.nav.map((item) => (
                     <li key={item.id}>
                       <button
@@ -457,7 +494,7 @@ export default function Home() {
             </div>
 
             {/* Sidebar Footer */}
-            <div className="mt-8 lg:mt-6 flex items-center justify-between gap-4 pt-4 border-t border-[var(--border)]">
+            <div className="mt-6 lg:mt-4 flex items-center justify-between gap-4 pt-4 border-t border-[var(--border)]">
               <div className="flex items-center gap-4 text-[var(--muted-subtle)]">
                 <a
                   href={personalInfo.github}
@@ -486,14 +523,9 @@ export default function Home() {
                 </a>
               </div>
 
-              <Link
-                href="/minimal"
-                className="group inline-flex items-center gap-1.5 text-xs font-mono text-[var(--muted-subtle)] hover:text-[var(--accent)] transition-colors"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{ui.minimalLink}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
+              <span className="text-xs font-mono text-[var(--muted-subtle)]">
+                {personalInfo.email}
+              </span>
             </div>
           </header>
 
@@ -502,7 +534,7 @@ export default function Home() {
             {/* SECTION 1: ABOUT */}
             <section
               id="about"
-              className="scroll-mt-16 lg:scroll-mt-20 space-y-4 max-w-[65ch] text-sm text-[var(--muted)] leading-relaxed"
+              className="scroll-mt-16 lg:scroll-mt-20 space-y-4 max-w-[54ch] text-sm text-[var(--muted)] leading-relaxed"
               aria-label={ui.aboutHeading}
             >
               <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
@@ -554,7 +586,7 @@ export default function Home() {
                       </p>
 
                       <ul className="space-y-1.5 text-xs text-[var(--muted)]">
-                        {exp.highlights.slice(0, 2).map((item, hIdx) => (
+                        {exp.highlights.map((item, hIdx) => (
                           <li key={hIdx} className="flex items-start gap-2">
                             <span className="text-[var(--accent)] mt-0.5">›</span>
                             <span>{item}</span>
@@ -589,7 +621,7 @@ export default function Home() {
                   {ui.projHeading}
                 </h2>
 
-                <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Project tracks">
+                <div className="flex flex-wrap gap-2 sm:gap-1.5" role="tablist" aria-label="Project tracks">
                   {ui.tracks.map((track) => (
                     <button
                       key={track.id}
@@ -600,7 +632,7 @@ export default function Home() {
                         setActiveTrack(track.id);
                         setShowAllProjects(false);
                       }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+                      className={`px-3 sm:px-2.5 py-2 sm:py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                         activeTrack === track.id
                           ? "bg-[var(--cta-bg)] text-[var(--cta-fg)] font-semibold"
                           : "bg-[var(--card)] text-[var(--muted)] border border-[var(--border)] hover:text-[var(--foreground)]"
@@ -617,11 +649,17 @@ export default function Home() {
                   <button
                     key={project.id}
                     type="button"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => selectProject(project)}
                     className="w-full text-left group/item grid sm:grid-cols-8 sm:gap-5 p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] transition-colors cursor-pointer"
                   >
                     <div className="sm:col-span-2 mt-0.5 space-y-1.5">
-                      <span className="inline-block px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] text-xs font-mono font-semibold">
+                      <span
+                        className={`inline-block px-2.5 py-1 rounded-md text-xs font-mono font-semibold border ${
+                          ["senhora-vera", "meucapilar", "data-warehouse-voos", "meu-amigo-broto"].includes(project.id)
+                            ? "bg-[var(--signal-bg)] text-[var(--signal-fg)] border-[var(--signal-border)]"
+                            : "bg-[var(--surface-subtle)] text-[var(--muted)] border-[var(--border)]"
+                        }`}
+                      >
                         {project.shortMetric || project.categoryLabel}
                       </span>
                       <div className="text-xs font-mono text-[var(--muted-subtle)]">
@@ -800,7 +838,10 @@ export default function Home() {
               <p>{ui.footerNote}</p>
               <button
                 type="button"
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                onClick={() => {
+                  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                  window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+                }}
                 className="hover:text-[var(--foreground)] transition-colors cursor-pointer font-mono"
               >
                 {ui.backToTop}

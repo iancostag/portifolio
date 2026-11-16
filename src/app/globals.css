@@ -179,14 +179,6 @@ p {
   background: var(--theme-accent);
 }
 
-/* Dynamic Matrix Grid */
-.bg-grid-pattern {
-  background-size: 38px 38px;
-  background-image: 
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-}
-
 .bg-radial-glow {
   background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--theme-glow) 0%, transparent 70%);
 }
@@ -241,4 +233,50 @@ p {
 
 .animate-glow-border {
   animation: border-glow-pulse 4s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  [data-print-resume],
+  [data-print-resume] * {
+    visibility: visible !important;
+  }
+  [data-print-resume] {
+    position: absolute !important;
+    inset: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 11px !important;
+  }
+  [data-print-resume] .sticky {
+    display: none !important;
+  }
+  [data-print-resume] > div {
+    padding: 0 !important;
+    gap: 12px !important;
+  }
+  [data-print-resume] .space-y-8 > :not(:first-child) {
+    margin-top: 12px !important;
+  }
 }

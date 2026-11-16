@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Project } from "@/data/portfolio-data";
 import { useLocale } from "@/context/LocaleContext";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { X, ExternalLink, CheckCircle2, Cpu, Sparkles, ArrowRight } from "lucide-react";
 import { GithubIcon } from "@/components/SocialIcons";
+import { ProjectArchitectureDiagram } from "@/components/ProjectArchitectureDiagram";
 
 interface ProjectDrawerProps {
   project: Project | null;
@@ -13,6 +15,8 @@ interface ProjectDrawerProps {
 
 export function ProjectDrawer({ project, onClose }: ProjectDrawerProps) {
   const { locale } = useLocale();
+  const panelRef = useRef<HTMLElement>(null);
+  useFocusTrap(panelRef, Boolean(project));
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,7 +67,7 @@ export function ProjectDrawer({ project, onClose }: ProjectDrawerProps) {
         onClick={onClose}
       />
 
-      <aside className="relative z-10 w-full max-w-2xl bg-[var(--card)] border-l border-[var(--border)] shadow-2xl flex flex-col h-full overflow-y-auto text-[var(--foreground)]">
+      <aside ref={panelRef} className="relative z-10 w-full max-w-2xl bg-[var(--card)] border-l border-[var(--border)] shadow-2xl flex flex-col h-full overflow-y-auto text-[var(--foreground)]">
         <div className="sticky top-0 z-20 flex items-center justify-between p-6 bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)]">
           <div className="flex items-center gap-2.5">
             <span className="px-2.5 py-1 text-xs font-mono font-semibold rounded-full bg-[var(--surface-subtle)] text-[var(--muted)] border border-[var(--border)]">
@@ -94,6 +98,8 @@ export function ProjectDrawer({ project, onClose }: ProjectDrawerProps) {
               <span>{t.highlight}: {project.highlightMetric}</span>
             </div>
           </div>
+
+          <ProjectArchitectureDiagram projectId={project.id} locale={locale} />
 
           <section className="space-y-2.5">
             <h3 className="text-xs uppercase tracking-wider font-mono text-[var(--muted-subtle)] font-bold">

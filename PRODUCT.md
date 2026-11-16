@@ -41,7 +41,7 @@ Combines applied AI/RAG research (Instituto Eldorado / Softex, SPU-ITRAC / SBQS)
 
 - `src/data/portfolio-data.ts`: Structured portfolio projects, skills, and experience entries.
 - `public/avatar.jpg`: Profile photo.
-- Confirmed core proof points: UnB, Instituto Eldorado / Softex, SPU-ITRAC (SBQS), Singular GovTech, Studio Flávio Rabello, MeuCapilar (1h → 5min report optimization), Meu Amigo Broto (local-first + WCAG AAA), MPM GPU parallelization.
+- Confirmed core proof points: UnB, Instituto Eldorado / Softex, SPU-ITRAC (SBQS), Singular GovTech, Studio Flávio Rabello, MeuCapilar (1h → 5min report optimization), Meu Amigo Broto (local-first + WCAG AAA), MPM GPU parallelization (ongoing UnB thesis research; no final benchmark numbers claimed yet).
 - **Absences not to fabricate:** No external customer testimonials, unverified benchmarks, or third-party press quotes exist in the repository.
 
 ## Product Principles

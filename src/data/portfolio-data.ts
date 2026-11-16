@@ -169,25 +169,25 @@ export const PROJECTS: Project[] = [
   {
     id: "gpu-mpm",
     title: "Aceleração em GPU para MPM",
-    subtitle: "Pesquisa em Alta Performance (TCC UnB)",
+    subtitle: "Simulação Física Paralela com CUDA, C++ & OpenMP",
     category: "systems",
     categoryLabel: "Baixo Nível & GPU",
     period: "2026",
     featured: true,
-    highlightMetric: "Speedup de ~20x vs CPU Multi-core",
+    shortMetric: "CUDA • C++",
+    highlightMetric: "Kernels P2G/G2P • OpenMP vs. CUDA",
     shortDescription:
-      "Pesquisa de ponta acelerando simulação física granular com kernels otimizados em CUDA, Vulkan e OpenMP.",
+      "Paralelização de simulação física granular (Material Point Method) com kernels em CUDA, Vulkan e baseline em OpenMP.",
     overview:
-      "Projeto focado na aceleração massiva do Material Point Method (MPM), método numérico avançado para simulação física de materiais granulares, fluidos e sólidos com grandes deformações.",
+      "Projeto focado na paralelização do Material Point Method (MPM), método numérico para simulação física de materiais granulares, fluidos e sólidos com grandes deformações.",
     challenge:
-      "O método MPM exige transferências intensivas entre partículas (Lagrangian) e malha (Eulerian) a cada nanossegundo, tornando implementações tradicionais em CPU impraticáveis para resoluções realistas.",
+      "O método MPM exige transferências intensivas entre partículas (Lagrangian) e malha (Eulerian) a cada passo de tempo, tornando a execução sequencial em CPU um gargalo para malhas densas.",
     solution:
-      "Implementação de kernels customizados em C++ e CUDA explorando memória compartilhada (shared memory), paralelismo massivo em hardware NVIDIA e eliminação de conflitos de acesso à memória.",
+      "Implementação de kernels em C++ e CUDA explorando memória compartilhada (shared memory), paralelismo em GPU e comparação arquitetural contra baseline multi-core em OpenMP.",
     keyPoints: [
-      "Speedup comprovado de ~20x em relação à execução paralela em CPU com OpenMP",
-      "Otimização extrema de kernels P2G (Partícula-Grade) e G2P (Grade-Partícula)",
-      "Coalescência de memória e aproveitamento integral de núcleos CUDA",
-      "Rigor numérico e benchmarks comparativos documentados para o TCC na UnB",
+      "Paralelização dos estágios P2G (Partícula-Grade) e G2P (Grade-Partícula) em CUDA",
+      "Estratégias de coalescência de memória e redução de contenção atômica em GPU",
+      "Arquitetura comparativa estruturada entre CPU (OpenMP) e GPU (CUDA / Vulkan)",
     ],
     technologies: ["C++", "CUDA", "Vulkan", "OpenMP", "GPU Computing", "Makefiles"],
     accent: "emerald",
@@ -304,13 +304,13 @@ export const EXPERIENCES: Experience[] = [
     period: "Ago/2026 – Atual",
     current: true,
     location: "Brasília, DF",
-    highlightMetric: "-78% Custo de Tokens • RAG & NLI",
+    highlightMetric: "-75% Custo de Tokens • RAG & NLI",
     logoKey: "eldorado",
     summary:
       "Pesquisa e implementação de arquiteturas híbridas de inteligência artificial aplicadas à validação de dados em larga escala e fact-checking automatizado.",
     highlights: [
       "Desenvolvimento de pipelines RAG (Retrieval-Augmented Generation) com indexação vetorial densa em PGVector.",
-      "Redução de até 80% no consumo de tokens com triagem estilística prévia em TF-IDF e Regressão Logística.",
+      "Redução de 75% no consumo de tokens com triagem estilística prévia em TF-IDF e Regressão Logística.",
       "Engenharia de prompts avançada e orquestração de LLMs com verificação semântica em duas etapas.",
     ],
     skills: ["LLMs", "RAG", "PGVector", "Python", "PLN", "Model Context Protocol"],

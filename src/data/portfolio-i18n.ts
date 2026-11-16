@@ -12,7 +12,7 @@ const SHORT_METRICS_PT: Record<string, string> = {
   "senhora-vera": "-75% Tokens",
   meucapilar: "1h → 5 min",
   "data-warehouse-voos": "Milhões / min",
-  "gpu-mpm": "~20x CUDA",
+  "gpu-mpm": "CUDA • C++",
   "meu-amigo-broto": "WCAG AAA",
   "financas-os": "Open Finance",
   "agis-rh": "Desktop IPC",
@@ -107,24 +107,23 @@ const EN_PROJECTS: Project[] = [
   },
   {
     ...PT_PROJECTS[3],
-    subtitle: "High-Performance Computing Research (UnB Thesis)",
+    subtitle: "Parallel Physics Simulation with CUDA, C++ & OpenMP",
     categoryLabel: "Low-Level & GPU",
     period: "2026",
-    shortMetric: "~20x CUDA",
-    highlightMetric: "~20x Speedup vs Multi-core CPU",
+    shortMetric: "CUDA • C++",
+    highlightMetric: "P2G/G2P Kernels • OpenMP vs. CUDA",
     shortDescription:
-      "Physics simulation research accelerating Material Point Method (MPM) with custom CUDA, Vulkan, and OpenMP kernels.",
+      "GPU parallelization of Material Point Method (MPM) granular physics simulations using CUDA, Vulkan, and OpenMP.",
     overview:
-      "Undergraduate thesis focused on massively parallelizing the Material Point Method (MPM) for simulating granular materials, fluids, and large-deformation solids.",
+      "High-performance computing project focused on parallelizing the Material Point Method (MPM), a numerical technique for simulating granular materials, fluids, and large-deformation solids.",
     challenge:
-      "MPM requires intensive particle-to-grid and grid-to-particle transfers every timestep, making CPU implementations too slow for realistic resolutions.",
+      "MPM requires intensive particle-to-grid and grid-to-particle transfers every timestep, making CPU-bound execution a bottleneck for dense grids.",
     solution:
-      "Custom C++ and CUDA kernels leveraging shared memory, massive GPU parallelism, and memory-bank conflict elimination.",
+      "Custom C++ and CUDA kernels using shared memory and GPU parallelism, structured against a multi-core OpenMP CPU baseline.",
     keyPoints: [
-      "Measured ~20x speedup over multi-core OpenMP CPU execution",
-      "Deep optimization of P2G (Particle-to-Grid) and G2P (Grid-to-Particle) kernels",
-      "Coalesced memory access and full CUDA core saturation",
-      "Rigorous numerical validation and comparative benchmarks for UnB thesis",
+      "Parallelizing P2G (Particle-to-Grid) and G2P (Grid-to-Particle) stages in CUDA",
+      "Memory coalescing and atomic contention reduction strategies on GPU",
+      "Structured architecture comparing CPU (OpenMP) and GPU (CUDA / Vulkan)",
     ],
   },
   {
@@ -219,12 +218,12 @@ const EN_EXPERIENCES: Experience[] = [
     ...PT_EXPERIENCES[0],
     role: "Resident AI Researcher",
     period: "Aug/2026 – Present",
-    highlightMetric: "-78% Token Cost • RAG & NLI",
+    highlightMetric: "-75% Token Cost • RAG & NLI",
     summary:
       "Research and production implementation of hybrid AI architectures for large-scale data validation and automated fact-checking.",
     highlights: [
       "Built RAG pipelines with dense vector indexing on PostgreSQL / PGVector.",
-      "Cut LLM token consumption by up to 80% via preliminary TF-IDF + Logistic Regression stylistic triage.",
+      "Cut LLM token consumption by 75% via preliminary TF-IDF + Logistic Regression stylistic triage.",
       "Advanced prompt engineering and two-stage semantic verification orchestration.",
     ],
     skills: ["LLMs", "RAG", "PGVector", "Python", "NLP", "Model Context Protocol"],

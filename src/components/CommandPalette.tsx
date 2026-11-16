@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Command } from "cmdk";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import {
   Search,
   FolderGit2,
@@ -28,6 +29,8 @@ interface CommandPaletteProps {
 export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: CommandPaletteProps) {
   const [search, setSearch] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, isOpen);
   const { locale } = useLocale();
   const { projects, personalInfo } = getPortfolioData(locale);
 
@@ -63,7 +66,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
   };
 
   const copyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email);
+    navigator.clipboard.writeText(personalInfo.email).catch(() => {});
     setCopiedEmail(true);
     setTimeout(() => {
       setCopiedEmail(false);
@@ -122,7 +125,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] shadow-2xl text-[var(--foreground)]">
+      <div ref={dialogRef} className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl bg-[var(--card)] border border-[var(--border)] shadow-2xl text-[var(--foreground)]">
         <Command
           label={t.label}
           className="flex flex-col w-full"
@@ -259,7 +262,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
               <Command.Item
                 value="github profile repos"
                 onSelect={() => {
-                  window.open(personalInfo.github, "_blank");
+                  window.open(personalInfo.github, "_blank", "noopener,noreferrer");
                   onClose();
                 }}
                 className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm cursor-pointer hover:bg-[var(--surface-subtle)] data-[selected=true]:bg-[var(--surface-subtle)]"
@@ -274,7 +277,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
               <Command.Item
                 value="linkedin profile network"
                 onSelect={() => {
-                  window.open(personalInfo.linkedin, "_blank");
+                  window.open(personalInfo.linkedin, "_blank", "noopener,noreferrer");
                   onClose();
                 }}
                 className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm cursor-pointer hover:bg-[var(--surface-subtle)] data-[selected=true]:bg-[var(--surface-subtle)]"
