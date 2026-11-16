@@ -6,6 +6,7 @@ export interface Project {
   categoryLabel: string;
   period: string;
   featured: boolean;
+  shortMetric?: string;
   highlightMetric: string;
   shortDescription: string;
   overview: string;
@@ -41,7 +42,7 @@ export interface Education {
 
 export const PERSONAL_INFO = {
   name: "Ian Costa Guimarães",
-  role: "Engenheiro de Software & Pesquisador em IA",
+  role: "Engenheiro de Dados & IA • Engenheiro de Software",
   headline:
     "Especialista em orquestração de LLMs/RAG, Engenharia de Dados e Sistemas de Alta Performance (CUDA/GPU).",
   bio: "Graduando em Engenharia de Software na UnB e Pesquisador Residente em Inteligência Artificial no Instituto Eldorado/Softex. Foco em arquiteturas escaláveis, fact-checking automatizado com LLMs, pipelines de dados e computação acelerada em GPU.",

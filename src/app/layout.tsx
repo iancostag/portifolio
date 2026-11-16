@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { LocaleProvider } from "@/context/LocaleContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,13 +16,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://iancostag.vercel.app"),
-  title: "Ian Costa Guimarães | Engenharia de Software & Pesquisa em IA",
+  title: "Ian Costa Guimarães | Data Engineering & AI",
   description:
-    "Portfólio técnico de Ian Costa Guimarães (UnB & Instituto Eldorado). Especialista em orquestração de LLMs/RAG, Engenharia de Dados Medalhão, Computação Acelerada em GPU (CUDA) e Sistemas em Produção.",
+    "Technical portfolio of Ian Costa Guimarães (UnB & Instituto Eldorado). Specialist in LLM/RAG orchestration, Medallion Data Engineering, GPU Computing (CUDA), and Production Systems.",
   keywords: [
     "Ian Costa Guimarães",
-    "Engenharia de Software",
-    "Inteligência Artificial",
+    "Software Engineering",
+    "Artificial Intelligence",
     "RAG",
     "LLM",
     "PGVector",
@@ -34,11 +35,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Ian Costa Guimarães" }],
   openGraph: {
-    title: "Ian Costa Guimarães | Engenharia de Software & Pesquisa em IA",
+    title: "Ian Costa Guimarães | Data Engineering & AI",
     description:
-      "Portfólio técnico com arquiteturas detalhadas de IA (RAG/NLI), Engenharia de Dados, Sistemas de Produção e Computação em GPU.",
+      "Technical portfolio featuring AI (RAG/NLI) architectures, Data Engineering, Production Systems, and GPU Computing.",
     type: "website",
-    locale: "pt_BR",
+    locale: "en_US",
   },
   icons: {
     icon: [
@@ -56,11 +57,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-BR"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#000000] text-zinc-100 bg-grid-pattern transition-colors duration-500">
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors duration-500">
+        <LocaleProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

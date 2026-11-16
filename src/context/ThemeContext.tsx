@@ -81,7 +81,7 @@ export const THEME_PALETTES: Record<ThemePaletteId, ThemePalette> = {
     badgeText: "#c084fc",
     btnBg: "#7c3aed",
     btnText: "#ffffff",
-    previewGradient: "from-purple-500 via-violet-400 to-indigo-400",
+    previewGradient: "from-indigo-500 via-violet-400 to-slate-300",
     particleColors: [
       "rgba(139, 92, 246, ",
       "rgba(192, 132, 252, ",
@@ -141,12 +141,12 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  currentTheme: THEME_PALETTES.white,
+  currentTheme: THEME_PALETTES.emerald,
   setThemeId: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeId, setThemeIdState] = useState<ThemePaletteId>("white");
+  const [themeId, setThemeIdState] = useState<ThemePaletteId>("emerald");
 
   useEffect(() => {
     const saved = localStorage.getItem("ian-portfolio-theme") as ThemePaletteId;
@@ -154,7 +154,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setThemeIdState(saved);
       document.documentElement.dataset.palette = saved;
     } else {
-      document.documentElement.dataset.palette = "white";
+      document.documentElement.dataset.palette = "emerald";
     }
   }, []);
 
@@ -167,7 +167,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContext.Provider
       value={{
-        currentTheme: THEME_PALETTES[themeId] || THEME_PALETTES.white,
+        currentTheme: THEME_PALETTES[themeId] || THEME_PALETTES.emerald,
         setThemeId,
       }}
     >
