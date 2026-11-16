@@ -1,23 +1,62 @@
 @import "tailwindcss";
 
-:root {
-  --background: #07090d;
-  --foreground: #f8fafc;
-  --card: #0e131b;
-  --card-foreground: #f8fafc;
-  --border: rgba(148, 163, 184, 0.18);
-  --ring: #34d399;
-  --theme-accent: #34d399;
-  --theme-accent-secondary: #10b981;
-  --theme-glow: rgba(16, 185, 129, 0.14);
-  --theme-badge-bg: rgba(16, 185, 129, 0.12);
-  --theme-badge-text: #6ee7b7;
-  --selection-bg: #10b981;
-  --selection-text: #04100b;
+:root,
+[data-mode="light"] {
+  --background: #f1f5f9;
+  --foreground: #090d16;
+  --muted: #1e293b;
+  --muted-subtle: #334155;
+  --card: #ffffff;
+  --card-foreground: #090d16;
+  --surface-subtle: #e2e8f0;
+  --border: rgba(15, 23, 42, 0.18);
+  --border-hover: rgba(29, 78, 216, 0.55);
+  --ring: #1d4ed8;
+  --cta-bg: #090d16;
+  --cta-fg: #ffffff;
+  --cta-hover: #1e293b;
+  --accent: #1d4ed8;
+  --signal-bg: rgba(6, 95, 70, 0.1);
+  --signal-fg: #065f46;
+  --signal-border: rgba(6, 95, 70, 0.3);
+  --theme-accent: #1d4ed8;
+  --theme-accent-secondary: #065f46;
+  --theme-glow: rgba(29, 78, 216, 0.05);
+  --theme-badge-bg: #e2e8f0;
+  --theme-badge-text: #0f172a;
+  --selection-bg: #1d4ed8;
+  --selection-text: #ffffff;
 }
 
-/* Palette 1: Pure White & Titanium (Apple Pro / Leica) */
-[data-palette="white"] {
+[data-mode="dark"] {
+  --background: #0b0f17;
+  --foreground: #f8fafc;
+  --muted: #cbd5e1;
+  --muted-subtle: #94a3b8;
+  --card: #111827;
+  --card-foreground: #f8fafc;
+  --surface-subtle: rgba(255, 255, 255, 0.06);
+  --border: rgba(148, 163, 184, 0.18);
+  --border-hover: rgba(56, 189, 248, 0.45);
+  --ring: #38bdf8;
+  --cta-bg: #f8fafc;
+  --cta-fg: #0b0f17;
+  --cta-hover: #e2e8f0;
+  --accent: #38bdf8;
+  --signal-bg: rgba(16, 185, 129, 0.12);
+  --signal-fg: #6ee7b7;
+  --signal-border: rgba(16, 185, 129, 0.28);
+  --theme-accent: #38bdf8;
+  --theme-accent-secondary: #10b981;
+  --theme-glow: rgba(56, 189, 248, 0.1);
+  --theme-badge-bg: rgba(148, 163, 184, 0.1);
+  --theme-badge-text: #e2e8f0;
+  --selection-bg: #38bdf8;
+  --selection-text: #0b0f17;
+}
+
+/* Legacy dark-only palettes (never override Light Editorial) */
+[data-mode="dark"][data-palette="white"] {
   --background: #000000;
   --foreground: #ffffff;
   --card: #0c0c0e;
@@ -35,7 +74,7 @@
 }
 
 /* Palette 2: Midnight Ocean & Blue (Stripe / GitHub Pro) */
-[data-palette="blue"] {
+[data-mode="dark"][data-palette="blue"] {
   --background: #030712;
   --foreground: #f8fafc;
   --card: #080f20;
@@ -53,7 +92,7 @@
 }
 
 /* Palette 3: Electric Violet & Lavanda (Linear / Raycast) */
-[data-palette="violet"] {
+[data-mode="dark"][data-palette="violet"] {
   --background: #08070e;
   --foreground: #faf5ff;
   --card: #100d1e;
@@ -71,7 +110,7 @@
 }
 
 /* Palette 4: Sunset Amber & Dourado (Rust / Datadog) */
-[data-palette="amber"] {
+[data-mode="dark"][data-palette="amber"] {
   --background: #08080a;
   --foreground: #fffbeb;
   --card: #14110d;
@@ -88,21 +127,21 @@
   --selection-text: #000000;
 }
 
-/* Palette 5: Obsidian & Emerald Signal */
-[data-palette="emerald"] {
-  --background: #07090d;
+/* Palette 5: Obsidian & Emerald Signal (dark only) */
+[data-mode="dark"][data-palette="emerald"] {
+  --background: #0b0f17;
   --foreground: #f8fafc;
-  --card: #0e131b;
+  --card: #111827;
   --card-foreground: #f8fafc;
   --border: rgba(148, 163, 184, 0.18);
-  --ring: #34d399;
-  --theme-accent: #34d399;
+  --ring: #38bdf8;
+  --theme-accent: #38bdf8;
   --theme-accent-secondary: #10b981;
-  --theme-glow: rgba(16, 185, 129, 0.14);
-  --theme-badge-bg: rgba(16, 185, 129, 0.12);
-  --theme-badge-text: #6ee7b7;
-  --selection-bg: #10b981;
-  --selection-text: #04100b;
+  --theme-glow: rgba(56, 189, 248, 0.1);
+  --theme-badge-bg: rgba(148, 163, 184, 0.1);
+  --theme-badge-text: #e2e8f0;
+  --selection-bg: #38bdf8;
+  --selection-text: #0b0f17;
 }
 
 body {
@@ -149,7 +188,7 @@ p {
 }
 
 .bg-radial-glow {
-  background: radial-gradient(circle at 50% 0%, var(--theme-glow) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--theme-glow) 0%, transparent 70%);
 }
 
 .glass-card {

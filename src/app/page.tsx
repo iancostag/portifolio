@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Project } from "@/data/portfolio-data";
 import { getPortfolioData } from "@/data/portfolio-i18n";
 import { useLocale } from "@/context/LocaleContext";
+import { useThemePalette } from "@/context/ThemeContext";
 import {
   ArrowUpRight,
   Sparkles,
@@ -18,6 +19,8 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon, MailIcon } from "@/components/SocialIcons";
 import {
@@ -36,6 +39,7 @@ type TrackFilter = "all" | "ai" | "data" | "fullstack" | "systems";
 
 export default function Home() {
   const { locale, setLocale } = useLocale();
+  const { colorMode, toggleColorMode } = useThemePalette();
   const { personalInfo, projects, experiences, skillCategories } = getPortfolioData(locale);
 
   const [activeSection, setActiveSection] = useState<string>("about");
@@ -101,7 +105,7 @@ export default function Home() {
       case "unb":
         return <UnbLogo className="w-5 h-5 shrink-0" />;
       default:
-        return <div className="w-5 h-5 rounded bg-slate-800" />;
+        return <div className="w-5 h-5 rounded bg-[var(--surface-subtle)]" />;
     }
   };
 
@@ -146,6 +150,7 @@ export default function Home() {
           ],
           searchBtn: "Search",
           cvBtn: "1-Page CV",
+          modeTitle: colorMode === "light" ? "Switch to dark mode" : "Switch to light mode",
           nav: [
             { id: "about", label: "About & Focus" },
             { id: "experience", label: "Experience" },
@@ -157,23 +162,23 @@ export default function Home() {
           aboutHeading: "About & Focus",
           aboutP1: (
             <>
-              With over <strong className="text-white font-semibold">3 years of hands-on engineering experience</strong> and applied AI research, I am a Software Engineering undergraduate at the{" "}
-              <strong className="text-slate-100">University of Brasília (UnB)</strong> and a Resident AI Researcher at{" "}
-              <strong className="text-slate-100">Instituto Eldorado / Softex</strong>.
+              With over <strong className="text-[var(--foreground)] font-semibold">3 years of hands-on engineering experience</strong> and applied AI research, I am a Software Engineering undergraduate at the{" "}
+              <strong className="text-[var(--foreground)] font-semibold">University of Brasília (UnB)</strong> and a Resident AI Researcher at{" "}
+              <strong className="text-[var(--foreground)] font-semibold">Instituto Eldorado / Softex</strong>.
             </>
           ),
           aboutP2: (
             <>
-              My work sits at the intersection of <strong className="text-white font-semibold">rigorous software engineering</strong> and{" "}
-              <strong className="text-white font-semibold">production AI</strong>: hierarchical RAG pipelines on PostgreSQL/PGVector, Medallion ETL architectures, and hardware-accelerated computing in{" "}
-              <strong className="text-white font-semibold">CUDA / C++</strong> achieving ~20x speedups over multi-core CPU.
+              My work sits at the intersection of <strong className="text-[var(--foreground)] font-semibold">rigorous data & software engineering</strong> and{" "}
+              <strong className="text-[var(--foreground)] font-semibold">production AI</strong>: Medallion ETL pipelines, hierarchical RAG on PostgreSQL/PGVector, and hardware-accelerated computing in{" "}
+              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong> achieving ~20x speedups over multi-core CPU.
             </>
           ),
           aboutP3: (
             <>
               I build beyond notebook prototypes—focusing on factual guardrails against LLM hallucinations, cutting inference token costs by{" "}
-              <span className="text-emerald-300 font-mono font-semibold">-78% in Senhora Vera (Eldorado)</span>, and optimizing production clinical reports from{" "}
-              <span className="text-emerald-300 font-mono font-semibold">60m to 5m in MeuCapilar</span>.
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">-78% in Senhora Vera (Eldorado)</span>, and optimizing production clinical reports from{" "}
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">60m to 5m in MeuCapilar</span>.
             </>
           ),
           expHeading: "Experience",
@@ -213,6 +218,7 @@ export default function Home() {
           ],
           searchBtn: "Buscar",
           cvBtn: "1-Pág CV",
+          modeTitle: colorMode === "light" ? "Mudar para modo escuro" : "Mudar para modo claro",
           nav: [
             { id: "about", label: "Visão & Atuação" },
             { id: "experience", label: "Experiência" },
@@ -224,23 +230,23 @@ export default function Home() {
           aboutHeading: "Visão & Atuação",
           aboutP1: (
             <>
-              Com mais de <strong className="text-white font-semibold">3 anos de experiência prática</strong> em engenharia de software e pesquisa aplicada em Inteligência Artificial, sou graduando em{" "}
-              <strong className="text-slate-100">Engenharia de Software pela Universidade de Brasília (UnB)</strong> e pesquisador residente no{" "}
-              <strong className="text-slate-100">Instituto Eldorado / Softex</strong>.
+              Com mais de <strong className="text-[var(--foreground)] font-semibold">3 anos de experiência prática</strong> em engenharia de software e pesquisa aplicada em Inteligência Artificial, sou graduando em{" "}
+              <strong className="text-[var(--foreground)] font-semibold">Engenharia de Software pela Universidade de Brasília (UnB)</strong> e pesquisador residente no{" "}
+              <strong className="text-[var(--foreground)] font-semibold">Instituto Eldorado / Softex</strong>.
             </>
           ),
           aboutP2: (
             <>
-              Meu foco é a intersecção entre <strong className="text-white font-semibold">engenharia de software rigorosa</strong> e{" "}
-              <strong className="text-white font-semibold">IA em produção</strong>: pipelines RAG hierárquicos no PostgreSQL/PGVector, arquiteturas ETL Medalhão e computação acelerada em{" "}
-              <strong className="text-white font-semibold">CUDA / C++</strong> com ganhos de até ~20x sobre CPU.
+              Meu foco é a intersecção entre <strong className="text-[var(--foreground)] font-semibold">engenharia de dados rigorosa</strong> e{" "}
+              <strong className="text-[var(--foreground)] font-semibold">IA em produção</strong>: arquiteturas ETL Medalhão, pipelines RAG hierárquicos no PostgreSQL/PGVector e computação acelerada em{" "}
+              <strong className="text-[var(--foreground)] font-semibold">CUDA / C++</strong> com ganhos de até ~20x sobre CPU.
             </>
           ),
           aboutP3: (
             <>
               Vou além de protótipos em notebooks — foco em <em>guardrails</em> factuais contra alucinações, redução de{" "}
-              <span className="text-emerald-300 font-mono font-semibold">-78% no custo de tokens na Senhora Vera (Eldorado)</span> e otimização de laudos clínicos em produção de{" "}
-              <span className="text-emerald-300 font-mono font-semibold">60m para 5m no MeuCapilar</span>.
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">-78% no custo de tokens na Senhora Vera (Eldorado)</span> e otimização de laudos clínicos em produção de{" "}
+              <span className="text-[var(--signal-fg)] font-mono font-semibold">60m para 5m no MeuCapilar</span>.
             </>
           ),
           expHeading: "Experiência",
@@ -269,8 +275,8 @@ export default function Home() {
         };
 
   return (
-    <div className="relative min-h-screen bg-[var(--background)] transition-colors duration-500">
-      <div className="pointer-events-none fixed inset-x-0 top-0 h-96 bg-radial-glow" />
+    <div className="relative min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
+      <div className="pointer-events-none fixed inset-x-0 top-0 h-[520px] bg-radial-glow" />
       <SpotlightCursor />
 
       <FastScanModal
@@ -295,10 +301,10 @@ export default function Home() {
           {/* LEFT COLUMN (STICKY ON DESKTOP) */}
           <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[46%] lg:flex-col lg:justify-between lg:py-16 lg:overflow-y-auto">
             <div>
-              {/* Top Utility Bar: Status + Prominent EN / PT-BR Switcher */}
-              <div className="flex items-center justify-between gap-3 mb-6">
+              {/* Top Utility Bar: Status + Language Switcher + Light/Dark Toggle */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="relative w-11 h-11 rounded-full overflow-hidden border border-emerald-500/35 shrink-0">
+                  <div className="relative w-11 h-11 rounded-full overflow-hidden border border-[var(--border)] shrink-0">
                     <Image
                       src="/avatar.jpg"
                       alt={personalInfo.name}
@@ -308,70 +314,86 @@ export default function Home() {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="flex items-center gap-1.5 text-xs font-mono text-emerald-300">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                    <span className="flex items-center gap-1.5 text-xs font-mono text-[var(--accent)] font-medium">
+                      <span className="w-2 h-2 rounded-full bg-[var(--signal-fg)] shrink-0" />
                       {ui.available}
                     </span>
-                    <span className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+                    <span className="flex items-center gap-1.5 text-xs font-mono text-[var(--muted-subtle)]">
                       <MapPin className="w-3 h-3 shrink-0" />
                       {ui.location} • <Clock className="w-3 h-3 shrink-0" /> {currentTime || "12:00"} BRT
                     </span>
                   </div>
                 </div>
 
-                {/* Highly Visible Language Switcher */}
-                <div
-                  className="inline-flex items-center rounded-lg bg-[var(--card)] border border-[var(--border)] p-0.5 shrink-0"
-                  role="group"
-                  aria-label="Language switcher"
-                >
-                  <Globe className="w-3.5 h-3.5 text-slate-400 ml-2 mr-1" />
+                {/* Controls: EN | PT-BR + Light/Dark */}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <div
+                    className="inline-flex items-center rounded-lg bg-[var(--card)] border border-[var(--border)] p-0.5"
+                    role="group"
+                    aria-label="Language switcher"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-[var(--muted-subtle)] ml-2 mr-1" />
+                    <button
+                      type="button"
+                      onClick={() => setLocale("en")}
+                      className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
+                        locale === "en"
+                          ? "bg-[var(--cta-bg)] text-[var(--cta-fg)]"
+                          : "text-[var(--muted-subtle)] hover:text-[var(--foreground)]"
+                      }`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLocale("pt")}
+                      className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
+                        locale === "pt"
+                          ? "bg-[var(--cta-bg)] text-[var(--cta-fg)]"
+                          : "text-[var(--muted-subtle)] hover:text-[var(--foreground)]"
+                      }`}
+                    >
+                      PT-BR
+                    </button>
+                  </div>
+
                   <button
                     type="button"
-                    onClick={() => setLocale("en")}
-                    className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
-                      locale === "en"
-                        ? "bg-emerald-400 text-zinc-950"
-                        : "text-slate-300 hover:text-white"
-                    }`}
+                    onClick={toggleColorMode}
+                    title={ui.modeTitle}
+                    aria-label={ui.modeTitle}
+                    className="p-2 rounded-lg bg-[var(--card)] border border-[var(--border)] text-[var(--muted-subtle)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
                   >
-                    EN
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLocale("pt")}
-                    className={`px-2 py-1 text-xs font-mono font-semibold rounded-md transition-colors cursor-pointer ${
-                      locale === "pt"
-                        ? "bg-emerald-400 text-zinc-950"
-                        : "text-slate-300 hover:text-white"
-                    }`}
-                  >
-                    PT-BR
+                    {colorMode === "light" ? (
+                      <Moon className="w-3.5 h-3.5" />
+                    ) : (
+                      <Sun className="w-3.5 h-3.5" />
+                    )}
                   </button>
                 </div>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-sans">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--foreground)] font-sans">
                 {personalInfo.name}
               </h1>
-              <h2 className="mt-2.5 text-lg sm:text-xl font-medium tracking-tight text-slate-200">
+              <h2 className="mt-2.5 text-lg sm:text-xl font-medium tracking-tight text-[var(--muted)]">
                 {personalInfo.role}
               </h2>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-300">
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--muted)]">
                 {ui.positioning}
               </p>
 
-              {/* Impact KPI Grid with Emerald Signal */}
+              {/* Impact KPI Grid — Signal color reserved exclusively for verified metrics */}
               <div className="mt-6 grid grid-cols-2 gap-2.5 max-w-md">
                 {ui.kpis.map((kpi) => (
                   <div
                     key={kpi.label}
-                    className="p-3 rounded-xl bg-emerald-500/[0.06] border border-emerald-500/20"
+                    className="p-3 rounded-xl bg-[var(--card)] border border-[var(--border)]"
                   >
-                    <div className="text-xl sm:text-2xl font-bold text-emerald-300 font-mono tracking-tight">
+                    <div className="text-xl sm:text-2xl font-bold text-[var(--signal-fg)] font-mono tracking-tight">
                       {kpi.value}
                     </div>
-                    <div className="text-xs font-mono text-slate-300 mt-0.5">
+                    <div className="text-xs font-mono text-[var(--muted-subtle)] mt-0.5">
                       {kpi.label}
                     </div>
                   </div>
@@ -383,7 +405,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsFastScanOpen(true)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-semibold text-xs font-mono transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--cta-bg)] hover:bg-[var(--cta-hover)] text-[var(--cta-fg)] font-semibold text-xs font-mono transition-colors cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5" />
                   <span>{ui.cvBtn}</span>
@@ -391,11 +413,11 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsCommandOpen(true)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] hover:bg-white/10 border border-[var(--border)] text-xs font-mono text-slate-200 hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[var(--card)] hover:bg-[var(--surface-subtle)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-colors cursor-pointer"
                 >
-                  <CommandIcon className="w-3.5 h-3.5 text-emerald-400" />
+                  <CommandIcon className="w-3.5 h-3.5 text-[var(--accent)]" />
                   <span>{ui.searchBtn}</span>
-                  <kbd className="px-1.5 py-0.5 text-xs rounded bg-white/10 text-slate-300 border border-white/10">
+                  <kbd className="px-1.5 py-0.5 text-xs rounded bg-[var(--surface-subtle)] text-[var(--muted-subtle)] border border-[var(--border)]">
                     ⌘K
                   </kbd>
                 </button>
@@ -412,15 +434,17 @@ export default function Home() {
                         className="group flex items-center py-1 transition-all cursor-pointer"
                       >
                         <span
-                          className={`mr-4 h-px transition-all group-hover:w-14 group-hover:bg-emerald-400 ${
+                          className={`mr-4 h-px transition-all group-hover:w-14 group-hover:bg-[var(--accent)] ${
                             activeSection === item.id
-                              ? "w-14 bg-emerald-400"
-                              : "w-7 bg-slate-600"
+                              ? "w-14 bg-[var(--accent)]"
+                              : "w-7 bg-[var(--border)]"
                           }`}
                         />
                         <span
-                          className={`text-xs font-semibold uppercase tracking-widest transition-colors group-hover:text-white ${
-                            activeSection === item.id ? "text-emerald-300" : "text-slate-400"
+                          className={`text-xs font-semibold uppercase tracking-widest transition-colors group-hover:text-[var(--foreground)] ${
+                            activeSection === item.id
+                              ? "text-[var(--foreground)]"
+                              : "text-[var(--muted-subtle)]"
                           }`}
                         >
                           {item.label}
@@ -434,12 +458,12 @@ export default function Home() {
 
             {/* Sidebar Footer */}
             <div className="mt-8 lg:mt-6 flex items-center justify-between gap-4 pt-4 border-t border-[var(--border)]">
-              <div className="flex items-center gap-4 text-slate-400">
+              <div className="flex items-center gap-4 text-[var(--muted-subtle)]">
                 <a
                   href={personalInfo.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors p-1"
+                  className="hover:text-[var(--foreground)] transition-colors p-1"
                   aria-label="GitHub"
                 >
                   <GithubIcon className="w-5 h-5" />
@@ -448,14 +472,14 @@ export default function Home() {
                   href={personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors p-1"
+                  className="hover:text-[var(--foreground)] transition-colors p-1"
                   aria-label="LinkedIn"
                 >
                   <LinkedinIcon className="w-5 h-5" />
                 </a>
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="hover:text-emerald-300 transition-colors p-1"
+                  className="hover:text-[var(--foreground)] transition-colors p-1"
                   aria-label="Email"
                 >
                   <MailIcon className="w-5 h-5" />
@@ -464,7 +488,7 @@ export default function Home() {
 
               <Link
                 href="/minimal"
-                className="group inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-emerald-300 transition-colors"
+                className="group inline-flex items-center gap-1.5 text-xs font-mono text-[var(--muted-subtle)] hover:text-[var(--accent)] transition-colors"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{ui.minimalLink}</span>
@@ -478,10 +502,10 @@ export default function Home() {
             {/* SECTION 1: ABOUT */}
             <section
               id="about"
-              className="scroll-mt-16 lg:scroll-mt-20 space-y-4 max-w-[65ch] text-sm text-slate-300 leading-relaxed"
+              className="scroll-mt-16 lg:scroll-mt-20 space-y-4 max-w-[65ch] text-sm text-[var(--muted)] leading-relaxed"
               aria-label={ui.aboutHeading}
             >
-              <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
                 {ui.aboutHeading}
               </h2>
               <p>{ui.aboutP1}</p>
@@ -495,7 +519,7 @@ export default function Home() {
               className="scroll-mt-16 lg:scroll-mt-20 space-y-6"
               aria-label={ui.expHeading}
             >
-              <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
                 {ui.expHeading}
               </h2>
 
@@ -503,36 +527,36 @@ export default function Home() {
                 {experiences.map((exp, index) => (
                   <article
                     key={index}
-                    className="grid sm:grid-cols-8 sm:gap-5 p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/35 transition-colors"
+                    className="grid sm:grid-cols-8 sm:gap-5 p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] transition-colors"
                   >
-                    <div className="sm:col-span-2 text-xs font-mono uppercase tracking-wide text-slate-400 mt-0.5">
+                    <div className="sm:col-span-2 text-xs font-mono uppercase tracking-wide text-[var(--muted-subtle)] mt-0.5">
                       {exp.period}
                     </div>
 
                     <div className="sm:col-span-6 space-y-3 mt-2 sm:mt-0">
                       <div className="flex items-center gap-2.5 flex-wrap">
                         {getCompanyLogo(exp.logoKey)}
-                        <h3 className="font-semibold text-sm sm:text-base text-white flex items-center gap-1.5 flex-wrap">
+                        <h3 className="font-semibold text-sm sm:text-base text-[var(--foreground)] flex items-center gap-1.5 flex-wrap">
                           <span>{exp.role}</span>
-                          <span className="text-slate-400">•</span>
-                          <span className="text-slate-300 font-normal">{exp.organization}</span>
+                          <span className="text-[var(--muted-subtle)]">•</span>
+                          <span className="text-[var(--muted)] font-normal">{exp.organization}</span>
                         </h3>
                       </div>
 
                       {exp.highlightMetric && (
-                        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-500/12 text-emerald-300 border border-emerald-500/25 font-semibold text-xs font-mono">
+                        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] font-semibold text-xs font-mono">
                           <span>{exp.highlightMetric}</span>
                         </div>
                       )}
 
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
                         {exp.summary}
                       </p>
 
-                      <ul className="space-y-1.5 text-xs text-slate-300">
+                      <ul className="space-y-1.5 text-xs text-[var(--muted)]">
                         {exp.highlights.slice(0, 2).map((item, hIdx) => (
                           <li key={hIdx} className="flex items-start gap-2">
-                            <span className="text-emerald-400 mt-0.5">›</span>
+                            <span className="text-[var(--accent)] mt-0.5">›</span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -542,7 +566,7 @@ export default function Home() {
                         {exp.skills.map((skill, sIdx) => (
                           <li
                             key={sIdx}
-                            className="rounded-md bg-white/[0.05] px-2.5 py-1 text-xs font-mono text-slate-200 border border-white/10"
+                            className="rounded-md bg-[var(--surface-subtle)] px-2.5 py-1 text-xs font-mono text-[var(--foreground)] border border-[var(--border)]"
                           >
                             {skill}
                           </li>
@@ -561,7 +585,7 @@ export default function Home() {
               aria-label={ui.projHeading}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
                   {ui.projHeading}
                 </h2>
 
@@ -578,8 +602,8 @@ export default function Home() {
                       }}
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
                         activeTrack === track.id
-                          ? "bg-emerald-400 text-zinc-950 font-semibold"
-                          : "bg-[var(--card)] text-slate-300 border border-[var(--border)] hover:text-white"
+                          ? "bg-[var(--cta-bg)] text-[var(--cta-fg)] font-semibold"
+                          : "bg-[var(--card)] text-[var(--muted)] border border-[var(--border)] hover:text-[var(--foreground)]"
                       }`}
                     >
                       {track.label}
@@ -594,34 +618,34 @@ export default function Home() {
                     key={project.id}
                     type="button"
                     onClick={() => setSelectedProject(project)}
-                    className="w-full text-left group/item grid sm:grid-cols-8 sm:gap-5 p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition-colors cursor-pointer"
+                    className="w-full text-left group/item grid sm:grid-cols-8 sm:gap-5 p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--border-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] transition-colors cursor-pointer"
                   >
                     <div className="sm:col-span-2 mt-0.5 space-y-1.5">
-                      <span className="inline-block px-2.5 py-1 rounded-md bg-emerald-500/12 text-emerald-300 border border-emerald-500/25 text-xs font-mono font-semibold">
+                      <span className="inline-block px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] text-xs font-mono font-semibold">
                         {project.shortMetric || project.categoryLabel}
                       </span>
-                      <div className="text-xs font-mono text-slate-400">
+                      <div className="text-xs font-mono text-[var(--muted-subtle)]">
                         {project.period}
                       </div>
                     </div>
 
                     <div className="sm:col-span-6 space-y-2.5 mt-3 sm:mt-0">
-                      <h3 className="font-semibold text-sm sm:text-base text-white flex items-center justify-between gap-2">
+                      <h3 className="font-semibold text-sm sm:text-base text-[var(--foreground)] flex items-center justify-between gap-2">
                         <span className="flex items-center gap-1.5">
                           {project.title}
-                          <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover/item:text-emerald-300 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 transition-all" />
+                          <ArrowUpRight className="w-4 h-4 text-[var(--muted-subtle)] group-hover/item:text-[var(--accent)] group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 transition-all" />
                         </span>
-                        <span className="text-xs font-mono text-emerald-300/80 group-hover/item:text-emerald-300 shrink-0">
+                        <span className="text-xs font-mono text-[var(--accent)] shrink-0">
                           {ui.viewDetails} →
                         </span>
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
                         {project.shortDescription}
                       </p>
 
-                      <p className="text-xs font-mono text-emerald-300">
-                        <span className="text-slate-400 mr-1.5">{ui.impactPrefix}</span>
+                      <p className="text-xs font-mono text-[var(--signal-fg)] font-medium">
+                        <span className="text-[var(--muted-subtle)] mr-1.5 font-normal">{ui.impactPrefix}</span>
                         {project.highlightMetric}
                       </p>
 
@@ -629,7 +653,7 @@ export default function Home() {
                         {project.technologies.slice(0, 5).map((tech, tIdx) => (
                           <li
                             key={tIdx}
-                            className="rounded-md bg-white/[0.05] px-2.5 py-1 text-xs font-mono text-slate-200 border border-white/10"
+                            className="rounded-md bg-[var(--surface-subtle)] px-2.5 py-1 text-xs font-mono text-[var(--foreground)] border border-[var(--border)]"
                           >
                             {tech}
                           </li>
@@ -644,7 +668,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setShowAllProjects((prev) => !prev)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-emerald-500/40 text-xs font-mono text-slate-200 hover:text-emerald-300 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--border-hover)] text-xs font-mono text-[var(--muted)] hover:text-[var(--foreground)] flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
                   {showAllProjects ? (
                     <>
@@ -667,7 +691,7 @@ export default function Home() {
               className="scroll-mt-16 lg:scroll-mt-20 space-y-6"
               aria-label={ui.skillsHeading}
             >
-              <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
                 {ui.skillsHeading}
               </h2>
 
@@ -678,10 +702,10 @@ export default function Home() {
                     className="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-3"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono uppercase tracking-wider text-white font-semibold">
+                      <span className="text-xs font-mono uppercase tracking-wider text-[var(--foreground)] font-semibold">
                         {cat.title}
                       </span>
-                      <span className="text-xs font-mono text-slate-400">
+                      <span className="text-xs font-mono text-[var(--muted-subtle)]">
                         {cat.skills.length}
                       </span>
                     </div>
@@ -690,7 +714,7 @@ export default function Home() {
                       {cat.skills.map((skill, sIdx) => (
                         <span
                           key={sIdx}
-                          className="px-2.5 py-1 rounded-md bg-white/[0.05] text-slate-200 text-xs font-mono border border-white/10"
+                          className="px-2.5 py-1 rounded-md bg-[var(--surface-subtle)] text-[var(--foreground)] text-xs font-mono border border-[var(--border)]"
                         >
                           {skill}
                         </span>
@@ -701,23 +725,23 @@ export default function Home() {
               </div>
 
               <div className="p-4 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-3">
-                <span className="text-xs font-mono uppercase tracking-wider text-white font-semibold block">
+                <span className="text-xs font-mono uppercase tracking-wider text-[var(--foreground)] font-semibold block">
                   {ui.certsHeading}
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[var(--muted)]">
                   <div className="space-y-1.5">
                     {personalInfo.certifications.map((cert, cIdx) => (
                       <div key={cIdx} className="flex items-center gap-2">
-                        <span className="text-emerald-400 font-bold">✓</span>
-                        <span className="text-slate-200">{cert}</span>
+                        <span className="text-[var(--signal-fg)] font-bold">✓</span>
+                        <span className="text-[var(--foreground)]">{cert}</span>
                       </div>
                     ))}
                   </div>
                   <div className="space-y-1.5">
                     {personalInfo.languages.map((lang, lIdx) => (
-                      <div key={lIdx} className="flex items-center justify-between text-slate-400">
-                        <span className="text-slate-200">{lang.name}</span>
-                        <span className="font-mono text-xs text-emerald-300">{lang.level}</span>
+                      <div key={lIdx} className="flex items-center justify-between text-[var(--muted-subtle)]">
+                        <span className="text-[var(--foreground)]">{lang.name}</span>
+                        <span className="font-mono text-xs text-[var(--muted)]">{lang.level}</span>
                       </div>
                     ))}
                   </div>
@@ -728,20 +752,20 @@ export default function Home() {
             {/* SECTION 5: CONTACT CTA */}
             <section
               id="contact"
-              className="scroll-mt-16 lg:scroll-mt-20 p-6 rounded-2xl bg-emerald-500/[0.06] border border-emerald-500/25 space-y-4"
+              className="scroll-mt-16 lg:scroll-mt-20 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-4"
               aria-label={ui.contactHeading}
             >
-              <h2 className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-bold">
                 {ui.contactHeading}
               </h2>
-              <p className="text-sm text-slate-200 leading-relaxed">
+              <p className="text-sm text-[var(--muted)] leading-relaxed">
                 {ui.contactLead}
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-semibold text-xs font-mono transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--cta-bg)] hover:bg-[var(--cta-hover)] text-[var(--cta-fg)] font-semibold text-xs font-mono transition-colors cursor-pointer"
                 >
                   {copiedEmail ? (
                     <Check className="w-4 h-4" />
@@ -754,7 +778,7 @@ export default function Home() {
                   href={personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--card)] hover:bg-white/10 border border-[var(--border)] text-xs font-mono text-slate-200 hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--surface-subtle)] hover:opacity-90 border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-opacity"
                 >
                   <LinkedinIcon className="w-4 h-4" />
                   <span>LinkedIn</span>
@@ -763,7 +787,7 @@ export default function Home() {
                   href={personalInfo.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--card)] hover:bg-white/10 border border-[var(--border)] text-xs font-mono text-slate-200 hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[var(--surface-subtle)] hover:opacity-90 border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-opacity"
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>GitHub</span>
@@ -772,12 +796,12 @@ export default function Home() {
             </section>
 
             {/* FOOTER */}
-            <footer className="pt-8 border-t border-[var(--border)] text-xs text-slate-400 flex flex-wrap items-center justify-between gap-4">
+            <footer className="pt-8 border-t border-[var(--border)] text-xs text-[var(--muted-subtle)] flex flex-wrap items-center justify-between gap-4">
               <p>{ui.footerNote}</p>
               <button
                 type="button"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="hover:text-emerald-300 transition-colors cursor-pointer font-mono"
+                className="hover:text-[var(--foreground)] transition-colors cursor-pointer font-mono"
               >
                 {ui.backToTop}
               </button>

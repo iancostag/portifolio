@@ -135,18 +135,27 @@ export const THEME_PALETTES: Record<ThemePaletteId, ThemePalette> = {
   },
 };
 
+export type ColorMode = "light" | "dark";
+
 interface ThemeContextType {
   currentTheme: ThemePalette;
   setThemeId: (id: ThemePaletteId) => void;
+  colorMode: ColorMode;
+  setColorMode: (mode: ColorMode) => void;
+  toggleColorMode: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   currentTheme: THEME_PALETTES.emerald,
   setThemeId: () => {},
+  colorMode: "dark",
+  setColorMode: () => {},
+  toggleColorMode: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeId, setThemeIdState] = useState<ThemePaletteId>("emerald");
+  const [colorMode, setColorModeState] = useState<ColorMode>("dark");
 
   useEffect(() => {
     const saved = localStorage.getItem("ian-portfolio-theme") as ThemePaletteId;
@@ -156,6 +165,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       document.documentElement.dataset.palette = "emerald";
     }
+
+    const savedMode = localStorage.getItem("ian-portfolio-mode") as ColorMode | null;
+    if (savedMode === "light" || savedMode === "dark") {
+      setColorModeState(savedMode);
+      document.documentElement.dataset.mode = savedMode;
+    } else {
+      document.documentElement.dataset.mode = "dark";
+    }
   }, []);
 
   const setThemeId = (id: ThemePaletteId) => {
@@ -164,11 +181,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.dataset.palette = id;
   };
 
+  const setColorMode = (mode: ColorMode) => {
+    setColorModeState(mode);
+    localStorage.setItem("ian-portfolio-mode", mode);
+    document.documentElement.dataset.mode = mode;
+  };
+
+  const toggleColorMode = () => {
+    setColorMode(colorMode === "light" ? "dark" : "light");
+  };
+
   return (
     <ThemeContext.Provider
       value={{
         currentTheme: THEME_PALETTES[themeId] || THEME_PALETTES.emerald,
         setThemeId,
+        colorMode,
+        setColorMode,
+        toggleColorMode,
       }}
     >
       {children}
