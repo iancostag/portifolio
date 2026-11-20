@@ -6,6 +6,7 @@ import {
   SKILL_CATEGORIES as PT_SKILL_CATEGORIES,
   Project,
   Experience,
+  Certification,
 } from "./portfolio-data";
 
 const SHORT_METRICS_PT: Record<string, string> = {
@@ -17,25 +18,30 @@ const SHORT_METRICS_PT: Record<string, string> = {
   "financas-os": "Open Finance",
   "agis-rh": "Desktop IPC",
   "jogo-mud-postgres": "PL/pgSQL",
+  "qa-e2e-framework": "Em andamento",
 };
 
 const EN_PERSONAL_INFO = {
   ...PT_PERSONAL_INFO,
-  role: "Data & AI Engineer • Software Engineer",
+  role: "Software Engineer • QA & Test Automation • Data & AI Systems",
   headline:
-    "Specialist in Data Engineering (Medallion/Star Schema), LLM/RAG Orchestration, and High-Performance Systems.",
-  bio: "Software Engineering undergraduate at UnB and Resident AI Researcher at Instituto Eldorado / Softex. Focused on scalable architectures, automated LLM fact-checking, data pipelines, and GPU-accelerated computing.",
+    "Building reliable production systems, automated E2E/API test suites (Robot Framework & Python), data pipelines, and LLM guardrails.",
+  bio: "Software Engineering undergraduate at UnB and Resident AI Researcher at Instituto Eldorado / Softex. Focused on scalable architectures, software quality, test automation, automated LLM fact-checking, and data pipelines.",
   location: "Brasília, DF - Brazil",
-  status: "Available for new challenges and high-complexity engineering roles",
+  status: "Available for Software Engineering, QA Automation & Data/AI roles",
   languages: [
     { name: "Portuguese", level: "Native" },
     { name: "English", level: "Advanced" },
     { name: "Japanese", level: "Intermediate" },
   ],
   certifications: [
-    "AWS Cloud Practitioner & Cloud Fundamentals",
-    "The Complete Rails Course (Ruby on Rails)",
-  ],
+    { label: "AWS Cloud Practitioner & Cloud Fundamentals" },
+    { label: "The Complete Rails Course (Ruby on Rails)" },
+    {
+      label: "ISTQB® Certified Tester Foundation Level (CTFL v4.0) — Exam Dec/2026",
+      inProgress: true,
+    },
+  ] as Certification[],
 };
 
 const EN_PROJECTS: Project[] = [
@@ -211,6 +217,29 @@ const EN_PROJECTS: Project[] = [
       "Full ACID integrity preventing item duplication under concurrency",
     ],
   },
+  {
+    ...PT_PROJECTS[8],
+    title: "E2E Web & API Test Automation Framework",
+    subtitle: "Modular Suite with Robot Framework, Playwright & CI/CD",
+    categoryLabel: "QA & Automation",
+    period: "In Progress",
+    shortMetric: "In Progress",
+    highlightMetric: "Web E2E + REST Contracts • Pabot & CI/CD",
+    shortDescription:
+      "Modular test automation suite covering Web flows (Browser Library / Playwright) and REST contract validation (RequestsLibrary). Built with BDD (Gherkin), Data-Driven Testing (boundary value analysis), parallel execution via Pabot, and GitHub Actions CI/CD generating automated HTML reports.",
+    overview:
+      "Modular test automation architecture built to validate end-to-end Web user journeys and REST API contracts with requirement traceability, layered separation (Page Objects / Keywords / Resources), and automated CI/CD execution.",
+    challenge:
+      "Avoiding brittle UI suites coupled to unstable selectors while maintaining consistent coverage across both Web flows and REST contract validation with fast feedback on pull requests.",
+    solution:
+      "Implemented in Robot Framework and Python combining Browser Library (Playwright) for Web E2E flows and RequestsLibrary for payload and status-code contract checks, structured with BDD (Gherkin), Data-Driven boundary value analysis, Pabot parallel runs, and automated HTML reports on GitHub Actions.",
+    keyPoints: [
+      "Web E2E automation with Browser Library (Playwright) and reusable modular architecture",
+      "REST contract validation (status codes, schemas, and business rules) via RequestsLibrary",
+      "Readable BDD (Gherkin) scenarios and Data-Driven suites applying boundary value analysis",
+      "Parallel execution via Pabot integrated with GitHub Actions generating automated HTML reports",
+    ],
+  },
 ];
 
 const EN_EXPERIENCES: Experience[] = [
@@ -226,7 +255,7 @@ const EN_EXPERIENCES: Experience[] = [
       "Cut LLM token consumption by 75% via preliminary TF-IDF + Logistic Regression stylistic triage.",
       "Advanced prompt engineering and two-stage semantic verification orchestration.",
     ],
-    skills: ["LLMs", "RAG", "PGVector", "Python", "NLP", "Model Context Protocol"],
+    skills: ["LLMs", "RAG", "PGVector", "Python", "NLP", "Model Context Protocol", "Automated Validation"],
   },
   {
     ...PT_EXPERIENCES[1],
@@ -240,13 +269,13 @@ const EN_EXPERIENCES: Experience[] = [
       "Implemented end-to-end automated testing suites and continuous production deployments.",
       "Built full anamnesis, consultation management, and high-speed autocomplete modules.",
     ],
-    skills: ["PostgreSQL", "Node.js", "TypeScript", "Next.js", "Docker", "Automated Testing"],
+    skills: ["PostgreSQL", "Node.js", "TypeScript", "Next.js", "Docker", "Automated Testing", "E2E Testing"],
   },
   {
     ...PT_EXPERIENCES[2],
     role: "Service Design Researcher (Fellow)",
     period: "Mar/2025 – Aug/2026",
-    highlightMetric: "Accepted Paper at SBQS • SPUX Blueprint",
+    highlightMetric: "Accepted Paper: Brazilian Symposium on Software Quality (SBQS) • SPUX Blueprint",
     summary:
       "Digital transformation and strategic public-service journey mapping at Brazil's Secretariat of Federal Assets (SPU).",
     highlights: [
@@ -340,7 +369,10 @@ const EN_SKILL_CATEGORIES = [
       "Design Thinking",
       "Agile & Kanban",
       "SLA & ITIL Management",
-      "Automated Testing",
+      "Robot Framework",
+      "Web & API Testing",
+      "BDD / Gherkin",
+      "Test Design (ISTQB)",
       "Accessibility (WCAG AAA)",
     ],
   },

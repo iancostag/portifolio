@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   title: string;
   subtitle: string;
-  category: "all" | "ai" | "data" | "fullstack" | "systems";
+  category: "all" | "ai" | "data" | "fullstack" | "systems" | "qa";
   categoryLabel: string;
   period: string;
   featured: boolean;
@@ -17,6 +17,11 @@ export interface Project {
   repoUrl?: string;
   liveUrl?: string;
   accent: "cyan" | "emerald" | "violet" | "amber" | "rose" | "blue";
+}
+
+export interface Certification {
+  label: string;
+  inProgress?: boolean;
 }
 
 export interface Experience {
@@ -42,24 +47,28 @@ export interface Education {
 
 export const PERSONAL_INFO = {
   name: "Ian Costa Guimarães",
-  role: "Engenheiro de Dados & IA • Engenheiro de Software",
+  role: "Engenheiro de Software • QA & Automação de Testes • Sistemas de Dados & IA",
   headline:
-    "Especialista em orquestração de LLMs/RAG, Engenharia de Dados e Sistemas de Alta Performance (CUDA/GPU).",
-  bio: "Graduando em Engenharia de Software na UnB e Pesquisador Residente em Inteligência Artificial no Instituto Eldorado/Softex. Foco em arquiteturas escaláveis, fact-checking automatizado com LLMs, pipelines de dados e computação acelerada em GPU.",
+    "Construindo sistemas confiáveis em produção, suítes automatizadas de testes E2E/API (Robot Framework & Python), pipelines de dados e guardrails para LLMs.",
+  bio: "Graduando em Engenharia de Software na UnB e Pesquisador Residente em Inteligência Artificial no Instituto Eldorado/Softex. Foco em arquiteturas escaláveis, qualidade de software, automação de testes, fact-checking automatizado com LLMs e pipelines de dados.",
   location: "Brasília, DF - Brasil",
   email: "iancostag@gmail.com",
   github: "https://github.com/iancostag",
   linkedin: "https://linkedin.com/in/iancostag",
-  status: "Disponível para novos desafios e projetos de alta complexidade",
+  status: "Disponível para Engenharia de Software, Automação de QA & Dados/IA",
   languages: [
     { name: "Português", level: "Nativo" },
     { name: "Inglês", level: "Avançado" },
     { name: "Japonês", level: "Intermediário" },
   ],
   certifications: [
-    "AWS Cloud Practitioner & Fundamentos de Nuvem",
-    "The Complete Rails Course (Ruby on Rails)",
-  ],
+    { label: "AWS Cloud Practitioner & Fundamentos de Nuvem" },
+    { label: "The Complete Rails Course (Ruby on Rails)" },
+    {
+      label: "ISTQB® Certified Tester Foundation Level (CTFL v4.0) — Exame Dez/2026",
+      inProgress: true,
+    },
+  ] as Certification[],
 };
 
 export const PROJECTS: Project[] = [
@@ -295,6 +304,41 @@ export const PROJECTS: Project[] = [
     technologies: ["PostgreSQL", "PL/pgSQL", "Triggers", "Views", "Database Architecture"],
     accent: "amber",
   },
+  {
+    id: "qa-e2e-framework",
+    title: "Framework de Automação de Testes E2E Web & API",
+    subtitle: "Suíte Modular em Robot Framework, Playwright & CI/CD",
+    category: "qa",
+    categoryLabel: "QA & Automação",
+    period: "Em andamento",
+    featured: false,
+    highlightMetric: "Web E2E + Contratos REST • Pabot & CI/CD",
+    shortDescription:
+      "Suíte modular de automação de testes cobrindo fluxos Web (Browser Library / Playwright) e validação de contratos REST (RequestsLibrary). Estruturada com BDD (Gherkin), testes orientados a dados (análise de valor limite), execução paralela com Pabot e esteira CI/CD no GitHub Actions gerando relatórios HTML automáticos.",
+    overview:
+      "Arquitetura modular de automação de testes concebida para validar fluxos críticos Web de ponta a ponta e contratos de APIs REST com rastreabilidade de requisitos, separação em camadas (Page Objects / Keywords / Resources) e execução automatizada em pipeline CI/CD.",
+    challenge:
+      "Evitar suítes frágeis e acopladas a seletores instáveis, garantindo cobertura consistente tanto da camada de interface quanto dos contratos REST com feedback rápido em pull requests.",
+    solution:
+      "Implementação em Robot Framework e Python combinando Browser Library (Playwright) para testes Web E2E e RequestsLibrary para validação de payloads e status codes, com cenários em BDD (Gherkin), Data-Driven Testing com análise de valor limite, paralelização via Pabot e publicação automática de relatórios HTML no GitHub Actions.",
+    keyPoints: [
+      "Automação Web E2E com Browser Library (Playwright) e arquitetura modular reutilizável",
+      "Validação de contratos REST (status codes, schemas e regras de negócio) com RequestsLibrary",
+      "Cenários legíveis em BDD (Gherkin) e suítes Data-Driven aplicando análise de valor limite",
+      "Execução paralela com Pabot integrada ao GitHub Actions gerando logs e relatórios HTML automáticos",
+    ],
+    technologies: [
+      "Robot Framework",
+      "Python",
+      "Playwright",
+      "API Testing",
+      "BDD",
+      "GitHub Actions",
+      "Pabot",
+    ],
+    repoUrl: "https://github.com/iancostag/qa-e2e-automation-framework",
+    accent: "cyan",
+  },
 ];
 
 export const EXPERIENCES: Experience[] = [
@@ -313,7 +357,7 @@ export const EXPERIENCES: Experience[] = [
       "Redução de 75% no consumo de tokens com triagem estilística prévia em TF-IDF e Regressão Logística.",
       "Engenharia de prompts avançada e orquestração de LLMs com verificação semântica em duas etapas.",
     ],
-    skills: ["LLMs", "RAG", "PGVector", "Python", "PLN", "Model Context Protocol"],
+    skills: ["LLMs", "RAG", "PGVector", "Python", "PLN", "Model Context Protocol", "Automated Validation"],
   },
   {
     role: "Mantedor de Infraestrutura & Desenvolvedor Fullstack",
@@ -330,7 +374,7 @@ export const EXPERIENCES: Experience[] = [
       "Implementação de rotinas de testes automatizados de ponta a ponta e deploy contínuo em produção.",
       "Módulos completos de anamnese, gestão de consultas e autocomplete dinâmico de alta performance.",
     ],
-    skills: ["PostgreSQL", "Node.js", "TypeScript", "Next.js", "Docker", "Testes Automatizados"],
+    skills: ["PostgreSQL", "Node.js", "TypeScript", "Next.js", "Docker", "Testes Automatizados", "E2E Testing"],
   },
   {
     role: "Pesquisador em Design de Serviços (Bolsista)",
@@ -338,7 +382,7 @@ export const EXPERIENCES: Experience[] = [
     period: "Mar/2025 – Ago/2026",
     current: false,
     location: "Brasília, DF",
-    highlightMetric: "Artigo Aceito no SBQS • SPUX Blueprint",
+    highlightMetric: "Artigo Aceito: Simpósio Brasileiro de Qualidade de Software (SBQS) • SPUX Blueprint",
     logoKey: "spu",
     summary:
       "Transformação digital e mapeamento de jornadas públicas estratégicas na Secretaria do Patrimônio da União (SPU).",
@@ -439,7 +483,10 @@ export const SKILL_CATEGORIES = [
       "Design Thinking",
       "Metodologias Ágeis & Kanban",
       "Gestão de SLAs & ITIL",
-      "Testes Automatizados",
+      "Robot Framework",
+      "Web & API Testing",
+      "BDD / Gherkin",
+      "Test Design (ISTQB)",
       "Acessibilidade (WCAG AAA)",
     ],
   },

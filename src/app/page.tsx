@@ -35,7 +35,7 @@ import { ProjectDrawer } from "@/components/ProjectDrawer";
 import { CommandPalette } from "@/components/CommandPalette";
 import { FastScanModal } from "@/components/FastScanModal";
 
-type TrackFilter = "all" | "ai" | "data" | "fullstack" | "systems";
+type TrackFilter = "all" | "qa" | "ai" | "data" | "fullstack" | "systems";
 
 export default function Home() {
   const { locale, setLocale } = useLocale();
@@ -159,10 +159,10 @@ export default function Home() {
   const ui =
     locale === "en"
       ? {
-          available: "Available for Data & AI Engineering roles",
+          available: "Available for Software Engineering, QA Automation & Data/AI roles",
           location: "Brasília, Brazil",
           positioning:
-            "Building production data pipelines (Medallion & Star Schema), LLM/RAG orchestration, and GPU-accelerated systems (CUDA/C++).",
+            "Building reliable production systems, automated E2E/API test suites (Robot Framework & Python), data pipelines, and LLM guardrails.",
           kpis: [
             { value: "Millions", label: "DW Rows (ETL)" },
             { value: "-75%", label: "RAG Token Cost" },
@@ -204,10 +204,18 @@ export default function Home() {
               <span className="text-[var(--signal-fg)] font-mono font-semibold">60m to 5m in MeuCapilar</span>.
             </>
           ),
+          aboutP4: (
+            <>
+              My background building production systems and data pipelines shaped a strong focus on{" "}
+              <strong className="text-[var(--foreground)] font-semibold">defect prevention, relational data integrity (SQL), traceable acceptance criteria, and automated testing</strong>.
+              Currently finalizing my <strong className="text-[var(--foreground)] font-semibold">ISTQB® CTFL v4.0</strong> certification (exam scheduled for Dec 2026) and building modular Web/API test automation architectures.
+            </>
+          ),
           expHeading: "Experience",
           projHeading: "Delivered Work",
           tracks: [
             { id: "all" as TrackFilter, label: "Featured" },
+            { id: "qa" as TrackFilter, label: "QA & Automation" },
             { id: "ai" as TrackFilter, label: "AI & RAG" },
             { id: "data" as TrackFilter, label: "Data Eng" },
             { id: "fullstack" as TrackFilter, label: "Fullstack" },
@@ -221,7 +229,7 @@ export default function Home() {
           certsHeading: "Certifications & Languages",
           contactHeading: "Get in Touch",
           contactLead:
-            "Open to Data Engineering, AI/RAG Engineering, and Software Engineering roles in Brazil and internationally.",
+            "Open to QA Automation, Software Engineering, and Data/AI roles in Brasília (Hybrid/Remote) and internationally.",
           copyEmail: "Copy Email",
           copiedEmail: "Copied!",
           backToTop: "Back to top ↑",
@@ -229,10 +237,10 @@ export default function Home() {
             "Engineered by Ian Costa Guimarães with Next.js 16, React 19, and Tailwind CSS.",
         }
       : {
-          available: "Disponível para vagas de Engenharia de Dados & IA",
+          available: "Disponível para Engenharia de Software, Automação de QA & Dados/IA",
           location: "Brasília, DF",
           positioning:
-            "Construindo pipelines de dados em produção (Medalhão & Star Schema), orquestrações de LLMs/RAG e sistemas acelerados em GPU (CUDA/C++).",
+            "Construindo sistemas confiáveis em produção, suítes automatizadas de testes E2E/API (Robot Framework & Python), pipelines de dados e guardrails para LLMs.",
           kpis: [
             { value: "Milhões", label: "Linhas em DW (ETL)" },
             { value: "-75%", label: "Tokens (RAG)" },
@@ -274,10 +282,18 @@ export default function Home() {
               <span className="text-[var(--signal-fg)] font-mono font-semibold">60m para 5m no MeuCapilar</span>.
             </>
           ),
+          aboutP4: (
+            <>
+              Minha experiência construindo sistemas em produção e pipelines de dados consolidou um foco forte em{" "}
+              <strong className="text-[var(--foreground)] font-semibold">prevenção de falhas, integridade relacional (SQL), critérios de aceite rastreáveis e testes automatizados</strong>.
+              Atualmente na reta final para a certificação <strong className="text-[var(--foreground)] font-semibold">ISTQB® CTFL v4.0</strong> (exame marcado para Dez/2026) e estruturando arquiteturas modulares de automação de testes Web e API.
+            </>
+          ),
           expHeading: "Experiência",
           projHeading: "Entregas & Resultados",
           tracks: [
             { id: "all" as TrackFilter, label: "Destaques" },
+            { id: "qa" as TrackFilter, label: "QA & Automação" },
             { id: "ai" as TrackFilter, label: "IA & RAG" },
             { id: "data" as TrackFilter, label: "Dados" },
             { id: "fullstack" as TrackFilter, label: "Fullstack" },
@@ -291,7 +307,7 @@ export default function Home() {
           certsHeading: "Certificações & Idiomas",
           contactHeading: "Contato",
           contactLead:
-            "Aberto a oportunidades de Engenharia de Dados, Engenharia de IA/RAG e Engenharia de Software no Brasil e no exterior.",
+            "Disponível para posições em Automação de QA, Engenharia de Software e Dados/IA em Brasília (Híbrido/Remoto) e exterior.",
           copyEmail: "Copiar E-mail",
           copiedEmail: "Copiado!",
           backToTop: "Voltar ao topo ↑",
@@ -543,6 +559,7 @@ export default function Home() {
               <p>{ui.aboutP1}</p>
               <p>{ui.aboutP2}</p>
               <p>{ui.aboutP3}</p>
+              <p>{ui.aboutP4}</p>
             </section>
 
             {/* SECTION 2: EXPERIENCE */}
@@ -770,8 +787,17 @@ export default function Home() {
                   <div className="space-y-1.5">
                     {personalInfo.certifications.map((cert, cIdx) => (
                       <div key={cIdx} className="flex items-center gap-2">
-                        <span className="text-[var(--signal-fg)] font-bold">✓</span>
-                        <span className="text-[var(--foreground)]">{cert}</span>
+                        <span
+                          className={
+                            cert.inProgress
+                              ? "text-[var(--accent)] font-bold"
+                              : "text-[var(--signal-fg)] font-bold"
+                          }
+                          aria-hidden="true"
+                        >
+                          {cert.inProgress ? "⏳" : "✓"}
+                        </span>
+                        <span className="text-[var(--foreground)]">{cert.label}</span>
                       </div>
                     ))}
                   </div>

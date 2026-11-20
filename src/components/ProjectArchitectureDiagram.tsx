@@ -116,6 +116,20 @@ const DIAGRAMS: Record<string, { en: DiagramStep[]; pt: DiagramStep[] }> = {
       { title: "Triggers & Views", detail: "Estado ACID" },
     ],
   },
+  "qa-e2e-framework": {
+    en: [
+      { title: "BDD & Test Data", detail: "Gherkin + BVA" },
+      { title: "Robot Framework", detail: "Browser + Requests", highlight: true },
+      { title: "Pabot Parallel", detail: "Multi-worker run" },
+      { title: "GitHub Actions", detail: "HTML Reports", highlight: true },
+    ],
+    pt: [
+      { title: "BDD & Massa", detail: "Gherkin + Valor Limite" },
+      { title: "Robot Framework", detail: "Browser + Requests", highlight: true },
+      { title: "Pabot Paralelo", detail: "Execução distribuída" },
+      { title: "GitHub Actions", detail: "Relatórios HTML", highlight: true },
+    ],
+  },
 };
 
 export function ProjectArchitectureDiagram({
