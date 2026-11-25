@@ -10,6 +10,22 @@ interface DiagramStep {
 }
 
 const DIAGRAMS: Record<string, { en: DiagramStep[]; pt: DiagramStep[] }> = {
+  "iris-pedagogical-ai": {
+    en: [
+      { title: "PII Scrubber", detail: "In-Memory Sanitization & Structural Decomposition" },
+      { title: "Extractor Agent", detail: "BNCC Curriculum Invariants & Locks" },
+      { title: "Hybrid RAG + Rerank", detail: "PGVector Qwen3 + Cross-Encoder 50→5", highlight: true },
+      { title: "Adapter Agent", detail: "3-Level Scaffolding + Scope Isolation" },
+      { title: "Auditor Agent", detail: "TRCC Check & Auto-Correction Loop", highlight: true },
+    ],
+    pt: [
+      { title: "PII Scrubber", detail: "Sanitização em Memória & Decomposição Estrutural" },
+      { title: "Extractor Agent", detail: "Invariantes Curriculares BNCC & Travas" },
+      { title: "Hybrid RAG + Rerank", detail: "PGVector Qwen3 + Cross-Encoder 50→5", highlight: true },
+      { title: "Adapter Agent", detail: "Andaime em 3 Níveis + Isolamento de Escopo" },
+      { title: "Auditor Agent", detail: "Checagem TRCC & Loop de Autocorreção", highlight: true },
+    ],
+  },
   "senhora-vera": {
     en: [
       { title: "Claim Stream", detail: "Raw text input" },

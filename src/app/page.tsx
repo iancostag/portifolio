@@ -693,6 +693,7 @@ export default function Home() {
               <div className="mt-5 space-y-4">
                 {visibleProjects.map((project) => {
                   const isSignalMetric = [
+                    "iris-pedagogical-ai",
                     "senhora-vera",
                     "meucapilar",
                     "data-warehouse-voos",

@@ -73,6 +73,44 @@ export const PERSONAL_INFO = {
 
 export const PROJECTS: Project[] = [
   {
+    id: "iris-pedagogical-ai",
+    title: "Íris — Adaptação Pedagógica com IA",
+    subtitle: "Plataforma Multiagente Stateless e RAG Híbrido para Educação Inclusiva (TDAH)",
+    category: "ai",
+    categoryLabel: "IA & RAG",
+    period: "Nov/2026",
+    featured: true,
+    shortMetric: "0,42 Recall@5 • Zero-PII",
+    highlightMetric: "Recall@5 0,20 → 0,42 (87% consultas atendidas) • Fidelidade > 0,90 • Zero-Database LGPD",
+    shortDescription:
+      "Plataforma multiagente stateless e RAG híbrido que adapta materiais escolares para alunos com TDAH com guardrails anti-PII e citações verificáveis.",
+    overview:
+      "Desenvolvido no Challenge 2 da Residência em IA (Eldorado / Softex / UnB), o Íris apoia docentes na adaptação de provas e atividades para alunos com TDAH sem empobrecer o currículo. Em vez de prompts genéricos, aplica parametrização por barreiras funcionais, andaime cognitivo em 3 níveis e privacidade estrita Zero-Database.",
+    challenge:
+      "LLMs genéricos costumam entregar respostas prontas (\"efeito muleta\"), reduzir a exigência curricular da BNCC, alucinar recomendações pedagógicas sem base científica e expor dados pessoais de alunos (LGPD).",
+    solution:
+      "Arquitetura stateless em FastAPI + Next.js com sanitização de PII em memória antes de qualquer chamada de LLM, motor RAG (embeddings Qwen3 no PostgreSQL/PGVector + reranking Cross-Encoder sobre 1.368 trechos de 38 fontes), cliente LLM híbrido (Anthropic Claude / Ollama local com ajuste dinâmico de num_ctx / fallback offline) e verificadores determinísticos de TRCC e isolamento de escopo.",
+    keyPoints: [
+      "Evoluiu a recuperação de BM25 (0,20 Recall@5, 47% consultas atendidas) para Qwen3 + reranking de 50 candidatos (0,42 Recall@5, 87% atendidas; AP@5 0,31 → 0,56).",
+      "Validou fundamentação com avaliação multi-provedor estilo LLM-as-a-Judge (Claude Sonnet + Codex + Opus), atingindo 0,905–0,950 de fidelidade acima do piso de 0,90.",
+      "Implementou verificadores determinísticos de TRCC e isolamento de escopo com 100% de detecção em testes adversariais de sabotagem e escalonamento automático de janela no Ollama (4k–32k tokens).",
+      "Garantiu Privacy-by-Design (Zero-Database): nenhum dado de aluno persistido, sanitização local de PII e perfil pedagógico portátil em JSON/PDF.",
+    ],
+    technologies: [
+      "Python",
+      "FastAPI",
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "PGVector",
+      "RAG",
+      "Anthropic Claude",
+      "Ollama",
+    ],
+    repoUrl: "https://github.com/challenge-2-residencia-ia-grupo-3/Iris",
+    accent: "emerald",
+  },
+  {
     id: "senhora-vera",
     title: "Senhora Vera",
     subtitle: "Agente de IA Híbrido para Fact-Checking",
@@ -182,7 +220,7 @@ export const PROJECTS: Project[] = [
     category: "systems",
     categoryLabel: "Baixo Nível & GPU",
     period: "2026",
-    featured: true,
+    featured: false,
     shortMetric: "CUDA • C++",
     highlightMetric: "Kernels P2G/G2P • OpenMP vs. CUDA",
     shortDescription:
@@ -314,7 +352,7 @@ export const PROJECTS: Project[] = [
     featured: false,
     highlightMetric: "Web E2E + Contratos REST • Pabot & CI/CD",
     shortDescription:
-      "Suíte modular de automação de testes cobrindo fluxos Web (Browser Library / Playwright) e validação de contratos REST (RequestsLibrary). Estruturada com BDD (Gherkin), testes orientados a dados (análise de valor limite), execução paralela com Pabot e esteira CI/CD no GitHub Actions gerando relatórios HTML automáticos.",
+      "Suíte modular de automação Web (Playwright) e contratos REST com BDD (Gherkin), execução paralela via Pabot e relatórios HTML no GitHub Actions.",
     overview:
       "Arquitetura modular de automação de testes concebida para validar fluxos críticos Web de ponta a ponta e contratos de APIs REST com rastreabilidade de requisitos, separação em camadas (Page Objects / Keywords / Resources) e execução automatizada em pipeline CI/CD.",
     challenge:
@@ -348,19 +386,19 @@ export const EXPERIENCES: Experience[] = [
     period: "Ago/2026 – Atual",
     current: true,
     location: "Brasília, DF",
-    highlightMetric: "-75% Custo de Tokens • RAG & NLI",
+    highlightMetric: "-75% Tokens (Senhora Vera) • Recall@5 0,42 & Fidelidade > 0,90 (Íris)",
     logoKey: "eldorado",
     summary:
-      "Pesquisa e implementação de arquiteturas híbridas de inteligência artificial aplicadas à validação de dados em larga escala e fact-checking automatizado.",
+      "Pesquisa e implementação de arquiteturas híbridas de IA, pipelines multiagentes e RAG em produção para fact-checking automatizado (Senhora Vera) e adaptação pedagógica inclusiva (Íris).",
     highlights: [
-      "Desenvolvimento de pipelines RAG (Retrieval-Augmented Generation) com indexação vetorial densa em PGVector.",
-      "Redução de 75% no consumo de tokens com triagem estilística prévia em TF-IDF e Regressão Logística.",
-      "Engenharia de prompts avançada e orquestração de LLMs com verificação semântica em duas etapas.",
+      "Senhora Vera: reduziu em 75% o consumo de tokens de LLMs com triagem estilística prévia (TF-IDF + Regressão Logística) e busca vetorial em PGVector com NLI.",
+      "Íris: arquitetou plataforma multiagente stateless e RAG híbrido (Qwen3 + Cross-Encoder) elevando Recall@5 de 0,20 para 0,42 (87% consultas atendidas) com Fidelidade > 0,90.",
+      "Implementou guardrails determinísticos (TRCC, isolamento de escopo e sanitização de PII em memória Zero-Database) validados por avaliação multi-provedor LLM-as-a-Judge.",
     ],
-    skills: ["LLMs", "RAG", "PGVector", "Python", "PLN", "Model Context Protocol", "Automated Validation"],
+    skills: ["LLMs", "RAG", "PGVector", "Python", "FastAPI", "NLI", "Anthropic Claude", "Automated Validation"],
   },
   {
-    role: "Mantedor de Infraestrutura & Desenvolvedor Fullstack",
+    role: "Mantenedor de Infraestrutura & Desenvolvedor Fullstack",
     organization: "Studio Flávio Rabello (MeuCapilar)",
     period: "Mar/2025 – Ago/2025",
     current: false,

@@ -10,6 +10,7 @@ import {
 } from "./portfolio-data";
 
 const SHORT_METRICS_PT: Record<string, string> = {
+  "iris-pedagogical-ai": "0,42 Recall@5 • Zero-PII",
   "senhora-vera": "-75% Tokens",
   meucapilar: "1h → 5 min",
   "data-warehouse-voos": "Milhões / min",
@@ -47,6 +48,29 @@ const EN_PERSONAL_INFO = {
 const EN_PROJECTS: Project[] = [
   {
     ...PT_PROJECTS[0],
+    title: "Íris — Pedagogical AI & Guardrails",
+    subtitle: "Stateless Multi-Agent & Hybrid RAG Platform for Neurodivergent Education",
+    categoryLabel: "AI & RAG",
+    period: "Nov/2026",
+    shortMetric: "0.42 Recall@5 • Zero-PII",
+    highlightMetric: "Recall@5 0.20 → 0.42 (87% queries hit) • Faithfulness > 0.90 • Zero-Database LGPD",
+    shortDescription:
+      "Stateless multi-agent and hybrid RAG platform that adapts school materials for ADHD students with zero-PII guardrails and verifiable citations.",
+    overview:
+      "Built during the AI Residency Challenge 2 (Eldorado / Softex / UnB), Íris supports K-12 teachers in adapting exams and activities for students with ADHD without diluting curriculum rigor. Unlike generic LLM wrappers, it enforces functional barriers over clinical labels, 3-level cognitive scaffolding, and strict Zero-Database privacy.",
+    challenge:
+      "Generic LLMs frequently leak answers (\"crutch effect\"), simplify away core BNCC learning objectives, hallucinate ungrounded pedagogical claims, and risk exposing student PII under LGPD constraints.",
+    solution:
+      "Architected a stateless FastAPI + Next.js pipeline with in-memory PII scrubbing before any LLM call, a Hybrid RAG engine (Qwen3 embeddings on PostgreSQL/PGVector + Cross-Encoder reranking over 1,368 curated chunks from 38 sources), a multi-provider LLM client (Anthropic Claude / local Ollama with dynamic num_ctx scaling / offline fallback), and deterministic TRCC + scope isolation verifiers.",
+    keyPoints: [
+      "Upgraded retrieval from BM25 baseline (0.20 Recall@5, 47% queries hit) to Qwen3 + 50-candidate Cross-Encoder reranking (0.42 Recall@5, 87% hit rate; AP@5 0.31 → 0.56).",
+      "Validated groundedness with multi-provider LLM-as-a-Judge evaluation (Claude Sonnet + Codex + Opus), achieving 0.905–0.950 faithfulness above the 0.90 threshold.",
+      "Built deterministic scope-isolation and TRCC checks with 100% detection across adversarial sabotage tests, plus automatic Ollama context-window escalation (4k–32k tokens) to prevent silent prompt truncation.",
+      "Enforced Privacy-by-Design (Zero-Database): zero student records persisted, local PII masking, and portable JSON/PDF pedagogical profiles.",
+    ],
+  },
+  {
+    ...PT_PROJECTS[1],
     subtitle: "Hybrid AI Agent for Fact-Checking",
     categoryLabel: "AI & RAG",
     period: "Oct/2026",
@@ -68,7 +92,7 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[1],
+    ...PT_PROJECTS[2],
     subtitle: "Clinical Hair & Scalp Assessment Platform",
     categoryLabel: "Fullstack & Production",
     period: "Mar/2025 – Aug/2025",
@@ -90,7 +114,8 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[2],
+    ...PT_PROJECTS[3],
+    title: "Flight Delays Data Warehouse",
     subtitle: "Medallion Pipeline with PostgreSQL & Power BI",
     categoryLabel: "Data Engineering",
     period: "Jan/2026",
@@ -112,7 +137,8 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[3],
+    ...PT_PROJECTS[4],
+    title: "GPU Acceleration for MPM",
     subtitle: "Parallel Physics Simulation with CUDA, C++ & OpenMP",
     categoryLabel: "Low-Level & GPU",
     period: "2026",
@@ -133,7 +159,7 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[4],
+    ...PT_PROJECTS[5],
     subtitle: "Local-First PWA for Gambling Harm Reduction",
     categoryLabel: "Fullstack & Mobile",
     period: "Oct/2026",
@@ -155,7 +181,7 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[5],
+    ...PT_PROJECTS[6],
     subtitle: "Personal Finance with Open Finance",
     categoryLabel: "Fullstack & FinTech",
     period: "Oct/2026",
@@ -176,7 +202,8 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[6],
+    ...PT_PROJECTS[7],
+    title: "AGIS — Shift Scheduling",
     subtitle: "Native Desktop HR Shift Management",
     categoryLabel: "Desktop & Systems",
     period: "2024",
@@ -197,7 +224,8 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[7],
+    ...PT_PROJECTS[8],
+    title: "Pure PostgreSQL MUD Engine",
     subtitle: "Multi-User Game Engine Inside PostgreSQL",
     categoryLabel: "Databases & Logic",
     period: "Jul/2025 – Aug/2025",
@@ -218,7 +246,7 @@ const EN_PROJECTS: Project[] = [
     ],
   },
   {
-    ...PT_PROJECTS[8],
+    ...PT_PROJECTS[9],
     title: "E2E Web & API Test Automation Framework",
     subtitle: "Modular Suite with Robot Framework, Playwright & CI/CD",
     categoryLabel: "QA & Automation",
@@ -226,7 +254,7 @@ const EN_PROJECTS: Project[] = [
     shortMetric: "In Progress",
     highlightMetric: "Web E2E + REST Contracts • Pabot & CI/CD",
     shortDescription:
-      "Modular test automation suite covering Web flows (Browser Library / Playwright) and REST contract validation (RequestsLibrary). Built with BDD (Gherkin), Data-Driven Testing (boundary value analysis), parallel execution via Pabot, and GitHub Actions CI/CD generating automated HTML reports.",
+      "Modular Web (Playwright) and REST contract test automation suite with BDD (Gherkin), parallel Pabot execution, and automated GitHub Actions HTML reports.",
     overview:
       "Modular test automation architecture built to validate end-to-end Web user journeys and REST API contracts with requirement traceability, layered separation (Page Objects / Keywords / Resources), and automated CI/CD execution.",
     challenge:
@@ -247,15 +275,15 @@ const EN_EXPERIENCES: Experience[] = [
     ...PT_EXPERIENCES[0],
     role: "Resident AI Researcher",
     period: "Aug/2026 – Present",
-    highlightMetric: "-75% Token Cost • RAG & NLI",
+    highlightMetric: "-75% Tokens (Senhora Vera) • Recall@5 0.42 & Faithfulness > 0.90 (Íris)",
     summary:
-      "Research and production implementation of hybrid AI architectures for large-scale data validation and automated fact-checking.",
+      "Research and production implementation of hybrid AI architectures, multi-agent pipelines, and RAG systems for automated fact-checking (Senhora Vera) and inclusive pedagogical adaptation (Íris).",
     highlights: [
-      "Built RAG pipelines with dense vector indexing on PostgreSQL / PGVector.",
-      "Cut LLM token consumption by 75% via preliminary TF-IDF + Logistic Regression stylistic triage.",
-      "Advanced prompt engineering and two-stage semantic verification orchestration.",
+      "Senhora Vera: cut LLM token consumption by 75% via preliminary TF-IDF + Logistic Regression stylistic triage and dense PGVector retrieval with NLI.",
+      "Íris: architected a stateless multi-agent and Hybrid RAG platform (Qwen3 + Cross-Encoder), boosting Recall@5 from 0.20 to 0.42 (87% queries hit) with Faithfulness > 0.90.",
+      "Built deterministic guardrails (TRCC, scope isolation, and Zero-Database in-memory PII scrubbing) validated via multi-provider LLM-as-a-Judge evaluation.",
     ],
-    skills: ["LLMs", "RAG", "PGVector", "Python", "NLP", "Model Context Protocol", "Automated Validation"],
+    skills: ["LLMs", "RAG", "PGVector", "Python", "FastAPI", "NLI", "Anthropic Claude", "Automated Validation"],
   },
   {
     ...PT_EXPERIENCES[1],
@@ -358,6 +386,7 @@ const EN_SKILL_CATEGORIES = [
       "Linux (Debian / Bash)",
       "Git & GitHub Actions",
       "Makefiles",
+      "Antigravity IDE",
     ],
   },
   {
