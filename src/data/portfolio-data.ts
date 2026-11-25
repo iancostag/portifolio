@@ -177,6 +177,7 @@ export const PROJECTS: Project[] = [
       "Docker",
       "Automated Testing",
     ],
+    repoUrl: "https://github.com/iancostag/2025.1-T02-MeuCapilar",
     accent: "emerald",
   },
   {
@@ -211,7 +212,7 @@ export const PROJECTS: Project[] = [
       "Power BI",
       "Star Schema",
     ],
-    repoUrl: "https://github.com/iancostag/dw-flight-delays",
+    repoUrl: "https://github.com/iancostag/airline-delay-causes-vizualization",
     accent: "cyan",
   },
   {
@@ -290,7 +291,7 @@ export const PROJECTS: Project[] = [
       "Interface responsiva com Next.js e Tailwind CSS",
     ],
     technologies: ["Next.js", "FastAPI", "Python", "TypeScript", "Tailwind CSS", "Pluggy API"],
-    repoUrl: "https://github.com/iancostag/financas-os",
+    repoUrl: "https://github.com/iancostag/gerenciador-financas",
     accent: "blue",
   },
   {
@@ -341,6 +342,7 @@ export const PROJECTS: Project[] = [
       "Integridade transacional total sem risco de duplicação de itens",
     ],
     technologies: ["PostgreSQL", "PL/pgSQL", "Triggers", "Views", "Database Architecture"],
+    repoUrl: "https://github.com/iancostag/2025.1_Ragnarok",
     accent: "amber",
   },
   {
@@ -457,6 +459,7 @@ export const EXPERIENCES: Experience[] = [
     current: true,
     location: "Brasília, DF",
     highlightMetric: "Liderança de 20 Engenheiros • Micromouse",
+    highlightUrl: "https://github.com/fcte-pi1/2026.1_PI1_Grupo1_Lui",
     logoKey: "unb",
     summary:
       "Gestão de equipes de engenharia e instrução acadêmica em disciplinas fundamentais do curso.",
