@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { motion, MotionConfig } from "framer-motion";
 import { Project } from "@/data/portfolio-data";
@@ -39,40 +39,70 @@ import { FastScanModal } from "@/components/FastScanModal";
 
 type TrackFilter = "all" | "qa" | "ai" | "data" | "fullstack" | "systems";
 
+const VALID_TRACKS: readonly TrackFilter[] = ["all", "qa", "ai", "data", "fullstack", "systems"];
 const SECTION_IDS = ["projects", "experience", "about", "skills", "contact"] as const;
+const URL_STATE_EVENT = "portfolio-url-state-change";
+const SBQS_ARTICLE_URL = "https://sol.sbc.org.br/index.php/sbqs/article/view/47817";
+
+interface KpiItem {
+  value: string;
+  label: string;
+  href?: string;
+}
+
+function subscribeUrlState(callback: () => void) {
+  window.addEventListener(URL_STATE_EVENT, callback);
+  window.addEventListener("popstate", callback);
+  return () => {
+    window.removeEventListener(URL_STATE_EVENT, callback);
+    window.removeEventListener("popstate", callback);
+  };
+}
+
+function getSearchSnapshot(): string {
+  return window.location.search;
+}
 
 export default function Home() {
   const { locale, setLocale } = useLocale();
   const { colorMode, toggleColorMode } = useThemePalette();
   const { personalInfo, projects, experiences, skillCategories } = getPortfolioData(locale);
 
+  const searchString = useSyncExternalStore(subscribeUrlState, getSearchSnapshot, () => "");
+  const urlParams = new URLSearchParams(searchString);
+  const urlProjectId = urlParams.get("project");
+  const rawTrack = urlParams.get("track") as TrackFilter | null;
+  const activeTrack: TrackFilter =
+    rawTrack && VALID_TRACKS.includes(rawTrack) ? rawTrack : "all";
+  const selectedProject = urlProjectId
+    ? projects.find((p) => p.id === urlProjectId) ?? null
+    : null;
+
   const [activeSection, setActiveSection] = useState<string>("projects");
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCommandOpen, setIsCommandOpen] = useState<boolean>(false);
   const [isFastScanOpen, setIsFastScanOpen] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>("");
-  const [activeTrack, setActiveTrack] = useState<TrackFilter>("all");
   const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
   const [copiedEmail, setCopiedEmail] = useState<boolean>(false);
 
-  // Open project drawer from ?project=<id> query param
-  useEffect(() => {
-    const projectId = new URLSearchParams(window.location.search).get("project");
-    if (projectId) {
-      const match = projects.find((p) => p.id === projectId);
-      if (match) setSelectedProject(match);
-    }
-  }, [locale]);
-
-  const selectProject = (project: Project | null) => {
-    setSelectedProject(project);
+  const updateUrlParam = (key: string, value: string | null) => {
     const url = new URL(window.location.href);
-    if (project) {
-      url.searchParams.set("project", project.id);
+    if (value) {
+      url.searchParams.set(key, value);
     } else {
-      url.searchParams.delete("project");
+      url.searchParams.delete(key);
     }
     window.history.replaceState({}, "", url.toString());
+    window.dispatchEvent(new Event(URL_STATE_EVENT));
+  };
+
+  const selectProject = (project: Project | null) => {
+    updateUrlParam("project", project ? project.id : null);
+  };
+
+  const selectTrack = (track: TrackFilter) => {
+    updateUrlParam("track", track === "all" ? null : track);
+    setShowAllProjects(false);
   };
 
   // Real-time Brasília clock
@@ -146,8 +176,19 @@ export default function Home() {
     }
   };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email).catch(() => {});
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = personalInfo.email;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
@@ -168,6 +209,8 @@ export default function Home() {
   const ui =
     locale === "en"
       ? {
+          skipToContent: "Skip to main content",
+          emptyTrack: "No projects found in this track.",
           available: "Available for Software Engineering, QA Automation & Data/AI roles",
           location: "Brasília, Brazil",
           positioning:
@@ -176,9 +219,9 @@ export default function Home() {
           kpis: [
             { value: "-75%", label: "RAG Token Cost" },
             { value: "1h → 5m", label: "Prod. Clinical Reports" },
-            { value: "SBQS", label: "Accepted Paper (SW Quality)" },
+            { value: "SBQS", label: "Accepted Paper (SW Quality)", href: SBQS_ARTICLE_URL },
             { value: "+3 Yrs", label: "Software Engineering" },
-          ],
+          ] as KpiItem[],
           searchBtn: "Search",
           cvBtn: "1-Page CV",
           pdfBtn: "PDF",
@@ -247,6 +290,8 @@ export default function Home() {
             "Engineered by Ian Costa Guimarães with Next.js 16, React 19, and Tailwind CSS.",
         }
       : {
+          skipToContent: "Pular para o conteúdo principal",
+          emptyTrack: "Nenhum projeto encontrado nesta trilha.",
           available: "Disponível para Engenharia de Software, Automação de QA & Dados/IA",
           location: "Brasília, DF",
           positioning:
@@ -255,9 +300,9 @@ export default function Home() {
           kpis: [
             { value: "-75%", label: "Custo de Tokens (RAG)" },
             { value: "1h → 5m", label: "Laudos em Produção" },
-            { value: "SBQS", label: "Artigo Aceito (Qualidade)" },
+            { value: "SBQS", label: "Artigo Aceito (Qualidade)", href: SBQS_ARTICLE_URL },
             { value: "+3 Anos", label: "Engenharia de Software" },
-          ],
+          ] as KpiItem[],
           searchBtn: "Buscar",
           cvBtn: "1-Pág CV",
           pdfBtn: "PDF",
@@ -329,6 +374,12 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
     <div className="relative min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:rounded-xl focus:bg-[var(--cta-bg)] focus:text-[var(--cta-fg)] focus:font-mono focus:text-xs focus:font-semibold focus:shadow-lg"
+      >
+        {ui.skipToContent}
+      </a>
       <div className="pointer-events-none fixed inset-x-0 top-0 h-[520px] bg-radial-glow" />
       <SpotlightCursor />
 
@@ -567,10 +618,16 @@ export default function Home() {
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                className="text-xs font-mono text-[var(--muted-subtle)] hover:text-[var(--foreground)] transition-colors py-2 px-2 rounded-md cursor-pointer truncate"
+                aria-live="polite"
+                className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--muted-subtle)] hover:text-[var(--foreground)] transition-colors py-2 px-2 rounded-md cursor-pointer truncate"
                 title={ui.copyEmail}
               >
-                {copiedEmail ? ui.copiedEmail : personalInfo.email}
+                {copiedEmail && (
+                  <Check className="w-3.5 h-3.5 text-[var(--signal-fg)] shrink-0" aria-hidden="true" />
+                )}
+                <span className={copiedEmail ? "text-[var(--signal-fg)] font-semibold" : ""}>
+                  {copiedEmail ? ui.copiedEmail : personalInfo.email}
+                </span>
               </button>
             </div>
           </header>
@@ -611,7 +668,7 @@ export default function Home() {
           </nav>
 
           {/* RIGHT CONTENT STAGE */}
-          <main className="pt-8 pb-16 lg:py-12 space-y-20 lg:space-y-24 min-w-0">
+          <main id="main-content" className="pt-8 pb-16 lg:py-12 space-y-20 lg:space-y-24 min-w-0">
             {/* TOP VERIFIED OUTCOMES STRIP — Hairline-divided, zero nested cards */}
             <section aria-label={ui.kpisLabel}>
               <dl className="grid grid-cols-2 sm:grid-cols-4 border-y border-[var(--border)] sm:divide-x sm:divide-[var(--border)]">
@@ -628,7 +685,22 @@ export default function Home() {
                       {kpi.label}
                     </dt>
                     <dd className="mt-1 text-xl sm:text-2xl font-bold text-[var(--signal-fg)] font-mono tracking-tight tabular-nums">
-                      {kpi.value}
+                      {kpi.href ? (
+                        <a
+                          href={kpi.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/kpi inline-flex items-center gap-1 underline decoration-[var(--signal-fg)]/45 underline-offset-4 hover:decoration-[var(--signal-fg)] transition-colors"
+                        >
+                          <span>{kpi.value}</span>
+                          <ArrowUpRight
+                            className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover/kpi:translate-x-0.5 group-hover/kpi:-translate-y-0.5"
+                            aria-hidden="true"
+                          />
+                        </a>
+                      ) : (
+                        kpi.value
+                      )}
                     </dd>
                   </div>
                 ))}
@@ -665,10 +737,8 @@ export default function Home() {
                         type="button"
                         role="tab"
                         aria-selected={isSelected}
-                        onClick={() => {
-                          setActiveTrack(track.id);
-                          setShowAllProjects(false);
-                        }}
+                        aria-controls="projects-panel"
+                        onClick={() => selectTrack(track.id)}
                         className={`relative min-h-9 px-3 rounded-lg text-xs font-mono transition-colors duration-150 cursor-pointer ${
                           isSelected
                             ? "text-[var(--cta-fg)] font-semibold"
@@ -690,8 +760,12 @@ export default function Home() {
               </div>
 
               {/* Interactive Project Artifacts — elevated interactive surfaces distinct from timeline */}
-              <div className="mt-5 space-y-4">
-                {visibleProjects.map((project) => {
+              <div id="projects-panel" role="tabpanel" className="mt-5 space-y-4">
+                {visibleProjects.length === 0 ? (
+                  <p className="py-8 text-center text-sm font-mono text-[var(--muted-subtle)] border border-dashed border-[var(--border)] rounded-xl">
+                    {ui.emptyTrack}
+                  </p>
+                ) : visibleProjects.map((project) => {
                   const isSignalMetric = [
                     "iris-pedagogical-ai",
                     "senhora-vera",
@@ -828,9 +902,24 @@ export default function Home() {
                       </div>
 
                       {exp.highlightMetric && (
-                        <div className="inline-flex items-center px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] font-semibold text-xs font-mono">
-                          {exp.highlightMetric}
-                        </div>
+                        exp.highlightUrl ? (
+                          <a
+                            href={exp.highlightUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/metric inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] hover:border-[var(--signal-fg)] font-semibold text-xs font-mono underline decoration-[var(--signal-fg)]/45 underline-offset-4 hover:decoration-[var(--signal-fg)] transition-colors"
+                          >
+                            <span>{exp.highlightMetric}</span>
+                            <ArrowUpRight
+                              className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover/metric:translate-x-0.5 group-hover/metric:-translate-y-0.5"
+                              aria-hidden="true"
+                            />
+                          </a>
+                        ) : (
+                          <div className="inline-flex items-center px-2.5 py-1 rounded-md bg-[var(--signal-bg)] text-[var(--signal-fg)] border border-[var(--signal-border)] font-semibold text-xs font-mono">
+                            {exp.highlightMetric}
+                          </div>
+                        )
                       )}
 
                       <p className="text-sm text-[var(--muted)] leading-relaxed max-w-[65ch]">
@@ -998,7 +1087,7 @@ export default function Home() {
                   href={personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-[var(--surface-subtle)] hover:opacity-90 border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-opacity"
+                  className="inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-[var(--surface-subtle)] hover:bg-[var(--card)] hover:border-[var(--border-hover)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-colors"
                 >
                   <LinkedinIcon className="w-4 h-4 shrink-0" />
                   <span>LinkedIn</span>
@@ -1007,7 +1096,7 @@ export default function Home() {
                   href={personalInfo.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-[var(--surface-subtle)] hover:opacity-90 border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-opacity"
+                  className="inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-[var(--surface-subtle)] hover:bg-[var(--card)] hover:border-[var(--border-hover)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] transition-colors"
                 >
                   <GithubIcon className="w-4 h-4 shrink-0" />
                   <span>GitHub</span>

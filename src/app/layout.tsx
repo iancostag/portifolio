@@ -16,12 +16,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://iancostag.vercel.app"),
-  title: "Ian Costa Guimarães | Data Engineering & AI",
+  title: "Ian Costa Guimarães | Software Engineering, QA & AI",
   description:
-    "Technical portfolio of Ian Costa Guimarães (UnB & Instituto Eldorado). Specialist in LLM/RAG orchestration, Medallion Data Engineering, GPU Computing (CUDA), and Production Systems.",
+    "Technical portfolio of Ian Costa Guimarães (UnB & Instituto Eldorado). Software Engineering, QA Test Automation (Robot Framework & Python), LLM/RAG systems, and Data Engineering.",
   keywords: [
     "Ian Costa Guimarães",
     "Software Engineering",
+    "QA Automation",
+    "Robot Framework",
     "Artificial Intelligence",
     "RAG",
     "LLM",
@@ -30,14 +32,13 @@ export const metadata: Metadata = {
     "Instituto Eldorado",
     "Data Warehouse",
     "CUDA",
-    "GPU",
     "PostgreSQL",
   ],
   authors: [{ name: "Ian Costa Guimarães" }],
   openGraph: {
-    title: "Ian Costa Guimarães | Data Engineering & AI",
+    title: "Ian Costa Guimarães | Software Engineering, QA & AI",
     description:
-      "Technical portfolio featuring AI (RAG/NLI) architectures, Data Engineering, Production Systems, and GPU Computing.",
+      "Technical portfolio featuring production systems, QA automation, multi-agent RAG/NLI architectures (Íris & Senhora Vera), and Data Engineering.",
     type: "website",
     locale: "en_US",
   },

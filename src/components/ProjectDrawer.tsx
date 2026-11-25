@@ -197,31 +197,37 @@ export function ProjectDrawer({ project, onClose }: ProjectDrawerProps) {
 
             {/* Pinned Footer */}
             <div className="shrink-0 px-5 sm:px-8 py-4 bg-[var(--card)] border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2.5">
-                {project.repoUrl && (
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 min-h-10 px-4 rounded-lg bg-[var(--surface-subtle)] hover:border-[var(--border-hover)] text-[var(--foreground)] text-xs sm:text-sm font-medium transition-colors border border-[var(--border)]"
-                  >
-                    <GithubIcon className="w-4 h-4 shrink-0" />
-                    <span>{t.repo}</span>
-                    <ArrowRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                  </a>
-                )}
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 min-h-10 px-4 rounded-lg bg-[var(--cta-bg)] hover:bg-[var(--cta-hover)] text-[var(--cta-fg)] text-xs sm:text-sm font-semibold transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
-                    <span>{t.live}</span>
-                  </a>
-                )}
-              </div>
+              {project.repoUrl || project.liveUrl ? (
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {project.repoUrl && (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 min-h-10 px-4 rounded-lg bg-[var(--surface-subtle)] hover:border-[var(--border-hover)] text-[var(--foreground)] text-xs sm:text-sm font-medium transition-colors border border-[var(--border)]"
+                    >
+                      <GithubIcon className="w-4 h-4 shrink-0" />
+                      <span>{t.repo}</span>
+                      <ArrowRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 min-h-10 px-4 rounded-lg bg-[var(--cta-bg)] hover:bg-[var(--cta-hover)] text-[var(--cta-fg)] text-xs sm:text-sm font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>{t.live}</span>
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <span className="text-xs font-mono text-[var(--muted-subtle)] tabular-nums">
+                  {project.categoryLabel} • {project.period}
+                </span>
+              )}
 
               <button
                 type="button"

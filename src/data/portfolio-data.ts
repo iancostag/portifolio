@@ -32,6 +32,7 @@ export interface Experience {
   location: string;
   summary: string;
   highlightMetric: string;
+  highlightUrl?: string;
   logoKey: "eldorado" | "flavio" | "spu" | "singular" | "unb";
   highlights: string[];
   skills: string[];
@@ -421,6 +422,7 @@ export const EXPERIENCES: Experience[] = [
     current: false,
     location: "Brasília, DF",
     highlightMetric: "Artigo Aceito: Simpósio Brasileiro de Qualidade de Software (SBQS) • SPUX Blueprint",
+    highlightUrl: "https://sol.sbc.org.br/index.php/sbqs/article/view/47817",
     logoKey: "spu",
     summary:
       "Transformação digital e mapeamento de jornadas públicas estratégicas na Secretaria do Patrimônio da União (SPU).",

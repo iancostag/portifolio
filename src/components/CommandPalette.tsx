@@ -35,11 +35,17 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
   const { locale } = useLocale();
   const { projects, personalInfo } = getPortfolioData(locale);
 
+  const handleClose = () => {
+    setSearch("");
+    onClose();
+  };
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         if (isOpen) {
+          setSearch("");
           onClose();
         } else if (onOpen) {
           onOpen();
@@ -48,6 +54,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
         }
       }
       if (e.key === "Escape" && isOpen) {
+        setSearch("");
         onClose();
       }
     };
@@ -57,7 +64,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
   }, [isOpen, onOpen, onClose]);
 
   const navigateTo = (id: string) => {
-    onClose();
+    handleClose();
     const el = document.getElementById(id);
     if (el) {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -70,7 +77,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
     setCopiedEmail(true);
     setTimeout(() => {
       setCopiedEmail(false);
-      onClose();
+      handleClose();
     }, 900);
   };
 
@@ -132,7 +139,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
             animate={{ opacity: 1, transition: { duration: 0.16, ease: "easeOut" } }}
             exit={{ opacity: 0, transition: { duration: 0.12, ease: "easeIn" } }}
             className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm"
-            onClick={onClose}
+            onClick={handleClose}
           />
 
           <motion.div
@@ -164,7 +171,7 @@ export function CommandPalette({ isOpen, onOpen, onClose, onSelectProject }: Com
             />
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label={t.close}
               className="inline-flex items-center justify-center w-9 h-9 -mr-1 rounded-lg text-[var(--muted-subtle)] hover:text-[var(--foreground)] hover:bg-[var(--surface-subtle)] transition-colors cursor-pointer shrink-0"
             >

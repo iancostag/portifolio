@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useSyncExternalStore } from "react";
 
 export type ThemePaletteId = "white" | "blue" | "violet" | "amber" | "emerald";
 
@@ -153,38 +153,54 @@ const ThemeContext = createContext<ThemeContextType>({
   toggleColorMode: () => {},
 });
 
+const THEME_EVENT = "portfolio-theme-change";
+
+function subscribeTheme(callback: () => void) {
+  window.addEventListener(THEME_EVENT, callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener(THEME_EVENT, callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+function getThemeIdSnapshot(): ThemePaletteId {
+  const saved = window.localStorage.getItem("ian-portfolio-theme") as ThemePaletteId | null;
+  return saved && THEME_PALETTES[saved] ? saved : "emerald";
+}
+
+function getColorModeSnapshot(): ColorMode {
+  const saved = window.localStorage.getItem("ian-portfolio-mode");
+  return saved === "light" || saved === "dark" ? saved : "dark";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeId, setThemeIdState] = useState<ThemePaletteId>("emerald");
-  const [colorMode, setColorModeState] = useState<ColorMode>("dark");
+  const themeId = useSyncExternalStore(
+    subscribeTheme,
+    getThemeIdSnapshot,
+    () => "emerald" as ThemePaletteId
+  );
+  const colorMode = useSyncExternalStore(
+    subscribeTheme,
+    getColorModeSnapshot,
+    () => "dark" as ColorMode
+  );
 
   useEffect(() => {
-    const saved = localStorage.getItem("ian-portfolio-theme") as ThemePaletteId;
-    if (saved && THEME_PALETTES[saved]) {
-      setThemeIdState(saved);
-      document.documentElement.dataset.palette = saved;
-    } else {
-      document.documentElement.dataset.palette = "emerald";
-    }
-
-    const savedMode = localStorage.getItem("ian-portfolio-mode") as ColorMode | null;
-    if (savedMode === "light" || savedMode === "dark") {
-      setColorModeState(savedMode);
-      document.documentElement.dataset.mode = savedMode;
-    } else {
-      document.documentElement.dataset.mode = "dark";
-    }
-  }, []);
+    document.documentElement.dataset.palette = themeId;
+    document.documentElement.dataset.mode = colorMode;
+  }, [themeId, colorMode]);
 
   const setThemeId = (id: ThemePaletteId) => {
-    setThemeIdState(id);
-    localStorage.setItem("ian-portfolio-theme", id);
+    window.localStorage.setItem("ian-portfolio-theme", id);
     document.documentElement.dataset.palette = id;
+    window.dispatchEvent(new Event(THEME_EVENT));
   };
 
   const setColorMode = (mode: ColorMode) => {
-    setColorModeState(mode);
-    localStorage.setItem("ian-portfolio-mode", mode);
+    window.localStorage.setItem("ian-portfolio-mode", mode);
     document.documentElement.dataset.mode = mode;
+    window.dispatchEvent(new Event(THEME_EVENT));
   };
 
   const toggleColorMode = () => {

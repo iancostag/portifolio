@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Printer } from "lucide-react";
+import { X, Printer, ArrowUpRight } from "lucide-react";
 import { getPortfolioData } from "@/data/portfolio-i18n";
 import { useLocale } from "@/context/LocaleContext";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
@@ -38,10 +38,10 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
         print: "Print / PDF",
         close: "Close summary",
         esc: "ESC",
-        subtitle: "Data Engineering & AI (Instituto Eldorado / Softex) • Software Engineering (UnB)",
+        subtitle: "Software Engineering (UnB) • Resident AI Researcher (Instituto Eldorado / Softex) • QA & Data/AI",
         summaryTitle: "Executive Summary",
         summaryBody:
-          "Data & AI Engineer focused on Medallion & Star Schema Data Engineering, LLM/RAG Orchestration, and GPU-Accelerated Computing (CUDA / Vulkan). Proven production impact: 75% LLM token reduction on hybrid RAG pipelines (Senhora Vera / Eldorado), 60m → 5m clinical report automation in production (MeuCapilar), and parallel MPM simulation in CUDA / C++.",
+          "Software Engineer (3+ years of hands-on experience) focused on production systems, QA test automation (Robot Framework, Playwright & ISTQB CTFL v4.0), Data Engineering, and LLM/RAG guardrails. Proven outcomes: Recall@5 0.20 → 0.42 & >0.90 faithfulness on hybrid multi-agent RAG (Íris / Eldorado), 75% LLM token reduction (Senhora Vera), and 60m → 5m clinical report automation in production (MeuCapilar).",
         projectsTitle: "Featured Projects & Measurable Outcomes",
         expTitle: "Experience & Research",
         skillsTitle: "Technical Competencies",
@@ -51,10 +51,10 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
         print: "Imprimir / PDF",
         close: "Fechar resumo",
         esc: "ESC",
-        subtitle: "Engenharia de Dados & IA (Instituto Eldorado / Softex) • Engenharia de Software (UnB)",
+        subtitle: "Engenharia de Software (UnB) • Pesquisador Residente em IA (Instituto Eldorado / Softex) • QA & Dados/IA",
         summaryTitle: "Resumo Executivo",
         summaryBody:
-          "Engenheiro de Dados & IA com foco em Engenharia de Dados (Medalhão & Star Schema), Orquestração de LLMs/RAG e Computação Acelerada em GPU (CUDA / Vulkan). Impacto comprovado: redução de 75% no custo de tokens com RAG híbrido (Senhora Vera / Eldorado), redução de laudos clínicos de 60 para 5 minutos em produção (MeuCapilar) e simulação paralela MPM em CUDA / C++.",
+          "Engenheiro de Software (+3 anos de experiência prática) com foco em sistemas em produção, automação de QA (Robot Framework, Playwright & ISTQB CTFL v4.0), Engenharia de Dados e guardrails para LLMs/RAG. Resultados comprovados: Recall@5 de 0,20 → 0,42 e fidelidade > 0,90 em RAG multiagente (Íris / Eldorado), -75% no custo de tokens (Senhora Vera) e laudos clínicos de 60m → 5m em produção (MeuCapilar).",
         projectsTitle: "Projetos em Destaque & Impactos Mensuráveis",
         expTitle: "Trajetória Profissional & Pesquisa",
         skillsTitle: "Competências Técnicas",
@@ -201,6 +201,17 @@ export function FastScanModal({ isOpen, onClose }: FastScanModalProps) {
                   <p className="text-xs text-[var(--muted)] leading-relaxed max-w-[70ch]">
                     {exp.summary}
                   </p>
+                  {exp.highlightUrl && (
+                    <a
+                      href={exp.highlightUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-mono text-[var(--signal-fg)] underline decoration-[var(--signal-fg)]/45 underline-offset-4 hover:decoration-[var(--signal-fg)] transition-colors"
+                    >
+                      <span>{exp.highlightMetric}</span>
+                      <ArrowUpRight className="w-3 h-3 shrink-0" aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
