@@ -26,6 +26,7 @@
   --theme-badge-text: #0f172a;
   --selection-bg: #1d4ed8;
   --selection-text: #ffffff;
+  --p-density: 1;
 }
 
 [data-mode="dark"] {
@@ -59,12 +60,37 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
+  caret-color: var(--accent);
   transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+a {
+  text-underline-offset: 0.2em;
 }
 
 p {
   text-wrap: pretty;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 ::selection {
@@ -152,7 +178,6 @@ p {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

@@ -104,7 +104,7 @@ export const PROJECTS: Project[] = [
       "Scikit-Learn",
       "NLI",
     ],
-    repoUrl: "https://github.com/iancostag/senhora-vera",
+    repoUrl: "https://github.com/Challenge-1-Grupo-04-Residencia/challenge_1_residencia_ia_grupo_4",
     accent: "emerald",
   },
   {

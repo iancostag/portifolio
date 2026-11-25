@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { Locale } from "@/context/LocaleContext";
 
 interface DiagramStep {
@@ -142,36 +142,55 @@ export function ProjectArchitectureDiagram({
   const steps = DIAGRAMS[projectId]?.[locale];
   if (!steps) return null;
 
+  const gridColsClass =
+    steps.length === 3
+      ? "sm:grid-cols-3"
+      : steps.length === 4
+        ? "sm:grid-cols-2 md:grid-cols-4"
+        : "sm:grid-cols-2 md:grid-cols-3";
+
   return (
-    <div className="p-4 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
-      <div className="text-xs font-mono uppercase tracking-wider text-[var(--muted-subtle)] font-semibold mb-3">
-        {locale === "en" ? "Architecture Flow" : "Fluxo da Arquitetura"}
+    <div className="pt-5 border-t border-[var(--border)] space-y-3">
+      <div className="text-xs font-mono uppercase tracking-widest text-[var(--muted-subtle)] font-semibold">
+        {locale === "en" ? "Architecture Pipeline" : "Fluxo da Arquitetura"}
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+
+      {/* Numbered responsive stage grid — focal left-to-right pipeline cascade */}
+      <ol className={`grid grid-cols-1 ${gridColsClass} gap-2.5`}>
         {steps.map((step, idx) => (
-          <div key={step.title} className="flex items-center gap-2">
+          <motion.li
+            key={step.title}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: 0.26,
+              delay: Math.min(idx * 0.045, 0.18),
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className={`px-3 py-2.5 rounded-lg border text-xs flex flex-col justify-between gap-1 ${
+              step.highlight
+                ? "bg-[var(--signal-bg)] border-[var(--signal-border)]"
+                : "bg-[var(--surface-subtle)] border-[var(--border)]"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-semibold text-[var(--foreground)] leading-snug">
+                {step.title}
+              </span>
+              <span className="text-[10px] font-mono text-[var(--muted-subtle)] tabular-nums shrink-0">
+                {String(idx + 1).padStart(2, "0")}
+              </span>
+            </div>
             <div
-              className={`px-3 py-2 rounded-lg border text-xs ${
-                step.highlight
-                  ? "bg-[var(--signal-bg)] border-[var(--signal-border)]"
-                  : "bg-[var(--card)] border-[var(--border)]"
+              className={`font-mono text-[11px] leading-snug ${
+                step.highlight ? "text-[var(--signal-fg)]" : "text-[var(--muted-subtle)]"
               }`}
             >
-              <div className="font-semibold text-[var(--foreground)]">{step.title}</div>
-              <div
-                className={`font-mono text-xs ${
-                  step.highlight ? "text-[var(--signal-fg)]" : "text-[var(--muted-subtle)]"
-                }`}
-              >
-                {step.detail}
-              </div>
+              {step.detail}
             </div>
-            {idx < steps.length - 1 && (
-              <ArrowRight className="w-3.5 h-3.5 text-[var(--muted-subtle)] shrink-0" />
-            )}
-          </div>
+          </motion.li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }
